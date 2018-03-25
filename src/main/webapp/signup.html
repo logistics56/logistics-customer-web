@@ -4,7 +4,7 @@
 	<head>
 		<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<title>我的速运-注册</title>
+		<title>我的駃达-注册</title>
 
 		<link rel="stylesheet" type="text/css" href="css/styleloginsign.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
@@ -13,11 +13,310 @@
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/self/effect.js"></script>
 		<script type="text/javascript" src="js/angular.min.js"></script>
+		
+<style type="text/css">
+                  #tips {
+                float: left;
+                margin: 2px 0 0 20px;
+            }
 
-		<!--[if IE]>
-    <script  type="text/javascript" src="js/html5.js"></script>
-    <script  type="text/javascript" src="js/respond.min.js"></script>
-    <![endif]-->
+            #tips span {
+                float: left;
+                width: 40px;
+                height: 20px;
+                color: white;
+                background: green;
+                margin-right: 2px;
+                line-height: 20px;
+                text-align: center;
+            }
+</style>
+<script type="text/javascript">
+	// 为注册按钮，设置点击事件
+function submitBtn(){
+		isEmpty();
+		var target=event.target;
+	    if(target.className.indexOf("signupBtn")>-1){
+		     // 加入判断,有"变灰"时返回
+		     alert("填写的内容不符合要求,不能注册");
+		     return false;
+		}else{
+			if($("input[type='checkbox']").is(':checked')){
+				$.ajax({
+	 				url : "http://localhost:8081/logistics-bos-controller/customer/saveData",
+	                type : "POST",
+	                async:true,
+	                jsonp:'jsoncallback',
+	                contentType : "application/json;charset=UTF-8",
+	                data : JSON.stringify({
+						telephone :$("#telephone").val(),
+	            		username :$("#username").val(),
+	            		checkcode :$("#checkcode").val(),
+	            		password :$("#password").val(),
+	            		email :$("#email").val(),
+	            		source:0,
+	                }),
+	                success:function(result) {
+	                    var message= JSON.stringify(result);
+	                    if(result.result == 1){
+	                    	window.location.href="signup-success.html"; //注册成功
+
+	                    }else{
+	                    	alert(result.errorMsg);
+	                    }
+	                },
+	                error:function(result){
+	                    alert("操作失败");
+	                }
+	            });
+			}else{
+				alert("请查看协议");
+			}
+		}
+	};
+<!-- 校验手机号-->
+function telephinChang(){
+	var telephone = $("#telephone").val();
+	var regex = /^1(3|5|6|7|8)\d{9}$/;
+	var signupBtn = document.getElementById("signupBtn");
+	var getcheckCodeBtn = document.getElementById("getcheckCodeBtn");
+	if(regex.test(telephone)){
+		
+		$.ajax({
+			url : "http://localhost:8081/logistics-bos-controller/customer/queryByTelephone",
+            type : "POST",
+            async:true,
+            jsonp:'jsoncallback',
+            contentType : "application/json;charset=UTF-8",
+            data : JSON.stringify({
+            	cTelephone:telephone,
+            }),
+            success:function(result) {
+            	if(result.result==1){
+            		$("#telephonesuccess").html("恭喜通过");
+            		$("#telephoneerror").html("");
+            		signupBtn.className=signupBtn.className.replace(" signupBtn","");
+            		getcheckCodeBtn.className=getcheckCodeBtn.className.replace(" getcheckCodeBtn","");
+            		return 1;
+            	}else{
+            		$("#telephonesuccess").html("");
+            		$("#telephoneerror").html("该手机号已注册");
+            		if(signupBtn.className.indexOf("signupBtn")==-1){
+            			signupBtn.className +=" signupBtn";
+            		}
+            		if(getcheckCodeBtn.className.indexOf("getcheckCodeBtn")==-1){
+            			getcheckCodeBtn.className +=" getcheckCodeBtn";
+            		}
+            		return 0;
+            	}
+            },
+            error:function(result){
+            }
+        });
+		
+	}else{
+		$("#telephonesuccess").html("");
+		$("#telephoneerror").html("手机号不符合规则");
+		if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+		return 0;
+	}
+}
+
+<!-- 校验密码强度 -->
+var aStr = ["弱", "中", "强", "牛逼"];
+
+function checkStrong(val) {
+    var modes = 0;
+    if (val.length < 6) return 0;
+    if (/\d/.test(val)) modes++; //数字
+    if (/[a-z]/.test(val)) modes++; //小写
+    if (/[A-Z]/.test(val)) modes++; //大写  
+    if (/\W/.test(val)) modes++; //特殊字符
+    return modes;
+};
+
+function passwordCheck() {
+    var val = $("#password").val();
+    var signupBtn = document.getElementById("signupBtn");
+    if(val.length < 6){
+    	$("#tips").hide();
+    	$("#passwordMsg").html("长度不足6位");
+    	if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+    	return 0;
+    }else if(val.length > 16){
+    	$("#tips").hide();
+    	$("#passwordMsg").html("长度已超过16位");
+    	if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+    	return 0;
+    }else{
+    	$("#tips").show();
+    	$("#passwordMsg").html("");
+    	signupBtn.className=signupBtn.className.replace(" signupBtn","");
+        var num = checkStrong(val);
+        switch (num) {
+            case 0:
+                break;
+            case 1:
+                $("#tips span").css('background', 'yellow').text('').eq(num - 1).css('background', 'red').text(aStr[num - 1]);
+                break;
+            case 2:
+                $("#tips span").css('background', '#FF9900').text('').eq(num - 1).css('background', 'red').text(aStr[num - 1]);
+                break;
+            case 3:
+                $("#tips span").css('background', '#F70938').text('').eq(num - 1).css('background', 'red').text(aStr[num - 1]);
+                break;
+            case 4:
+                $("#tips span").css('background', 'red').text('').eq(num - 1).css('background', 'red').text(aStr[num - 1]);
+                break;
+            default:
+                break;
+        }
+        return 1;
+    }
+    
+}
+
+function password2Check() {
+    var val = $("#password").val();
+    var val2 = $("#password2").val();
+    var signupBtn = document.getElementById("signupBtn");
+    if(val != val2){
+    	$("#passwordMsg2").html("两次输入不相同");
+    	$("#passwordMsg3").html("");
+    	if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+    	return 0;
+    }else{
+    	$("#passwordMsg2").html("");
+    	$("#passwordMsg3").html("通过");
+    	signupBtn.className=signupBtn.className.replace(" signupBtn","");
+    	return 1;
+    }
+  
+}
+
+<!-- 输入 -->
+function writeName(){
+	var val = $("#username").val();
+	var signupBtn = document.getElementById("signupBtn");
+	if(val.length ==0){
+		$("#usernameMsg").html("姓名不能为空");
+    	if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+    	return 0;
+	}else{
+		$("#usernameMsg").html("");
+		signupBtn.className=signupBtn.className.replace(" signupBtn","");
+		return 1;
+	}
+}
+function writeCheckcode(){
+	var val = $("#checkcode").val();
+	var signupBtn = document.getElementById("signupBtn");
+	if(val.length ==0){
+    	if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+    	return 0;
+	}else{
+		$("#checkcodeMsg").html("");
+		signupBtn.className=signupBtn.className.replace(" signupBtn","");
+		return 1;
+	}
+}
+
+
+function checkEmail(){
+	var val = $("#email").val();
+	var signupBtn = document.getElementById("signupBtn");
+	var reg = new RegExp("^[a-zA-Z0-9]+([._\\-]*[a-zA-Z0-9])*@([a-zA-Z0-9]+[-a-zA-Z0-9]*[a-zA-Z0-9]+.){1,63}[a-zA-Z0-9]+$"); //正则表达式
+	if(val === ""){ //输入不能为空
+		$("#emailMsg").html("输入不能为空");
+		if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+		return 0;
+	}else if(!reg.test(val)){ //正则验证不通过，格式不对
+	　　　$("#emailMsg").html("输入格式不对");
+		if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+		return 0;
+	}else{
+	　　　　$("#emailMsg").html("");
+		signupBtn.className=signupBtn.className.replace(" signupBtn","");
+		return 1;
+	}
+}
+
+function isEmpty(){
+	
+	var telephone = $("#telephone").val();
+	var username = $("#username").val();
+	var checkcode = $("#checkcode").val();
+	var password = $("#password").val();
+    var password2 = $("#password2").val();
+	var email = $("#email").val();
+	var signupBtn = document.getElementById("signupBtn");
+	if(telephone ==""){
+		$("#telephoneerror").html("手机号输入不能为空");
+		if(signupBtn.className.indexOf("signupBtn")==-1){
+			signupBtn.className +=" signupBtn";
+		}
+	}else{
+		if(username == ""){
+			$("#usernameMsg").html("用户名输入不能为空");
+			if(signupBtn.className.indexOf("signupBtn")==-1){
+				signupBtn.className +=" signupBtn";
+			}
+		}else{
+			if(checkcode == ""){
+				$("#checkcodeMsg").html("验证码输入不能为空");
+				if(signupBtn.className.indexOf("signupBtn")==-1){
+					signupBtn.className +=" signupBtn";
+				}
+			}else{
+				if(password == ""){
+					$("#passwordMsg").html("密码输入不能为空");
+					if(signupBtn.className.indexOf("signupBtn")==-1){
+						signupBtn.className +=" signupBtn";
+					}
+				}else{
+					if(password2 == ""){
+						$("#password2Msg").html("确认密码输入不能为空");
+						if(signupBtn.className.indexOf("signupBtn")==-1){
+							signupBtn.className +=" signupBtn";
+						}
+					}else{
+						if(email == ""){ //输入不能为空
+							$("#emailMsg").html("输入不能为空");
+							if(signupBtn.className.indexOf("signupBtn")==-1){
+								signupBtn.className +=" signupBtn";
+							}
+						}else{
+							if(telephinChang() == 0 || passwordCheck()==0 || password2Check()==0 || writeName()==0 || writeCheckcode()==0 || checkEmail()==0){
+								if(signupBtn.className.indexOf("signupBtn")==-1){
+									signupBtn.className +=" signupBtn";
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}
+</script>
+
 	</head>
 
 	<body>
@@ -47,23 +346,24 @@
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>手机号</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="telephone" ng-model="telephone2" id="inputaccount" placeholder="请输入手机号">
+									<input type="text" class="form-control" name="telephone" id="telephone" ng-model="telephone2" oninput="telephinChang()" placeholder="请输入手机号"><span style="color: green;" id="telephonesuccess"></span><span style="color: red;" id="telephoneerror"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>用户名</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" ng-model="username" placeholder="请输入用户姓名">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入用户姓名" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>验证码</label>
 								<div class="col-sm-5">
-									<input type="text" class="form-control" id="inputaccount" placeholder="请输入验证码" name="checkcode">
+									<input type="text" class="form-control" id="checkcode" placeholder="请输入验证码" name="checkcode" oninput="writeCheckcode()">
+									<span id="checkcodeMsg" style="color: red;"></span>
 								</div>
 								<div class="col-sm-3 song">
 									<!-- 发送验证码按钮 -->
-									<a class="btn btn-default" 
+									<a class="btn btn-default"  id="getcheckCodeBtn"
 										ng-click="getCheckCode()" 
 										ng-bind="btnMsg">
 									</a>
@@ -73,8 +373,10 @@
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>密码</label>
 								<div class="col-sm-8">
-									<input type="password" class="form-control" id="inputaccount" placeholder="6-16位数字或英文字母" name="password">
-									<p class="text-right grey">安全强度：*****</p>
+									<input type="password" class="form-control" id="password" maxlength="16" placeholder="6-16位数字或英文字母" name="password" oninput="passwordCheck()">
+									<span id="passwordMsg" style="color: red;"></span>
+									<div id="tips" style="display: none;"><span></span><span></span><span></span><span></span></div>
+        								
 								</div>
 
 							</div>
@@ -82,20 +384,23 @@
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>确认密码</label>
 								<div class="col-sm-8">
-									<input type="password" class="form-control" id="inputaccount" placeholder="6-16位数字或英文字母">
+									<input type="password" class="form-control" id="password2" placeholder="6-16位数字或英文字母" maxlength="16" name="password2" oninput="password2Check()">
+									<span id="passwordMsg2" style="color: red;"></span>
+									<span id="passwordMsg3" style="color: green;"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>绑定邮箱</label>
 								<div class="col-sm-8">
-									<input type="email" class="form-control" id="inputemail" placeholder="请输入需要绑定的邮箱" name="email">
+									<input type="email" class="form-control" id="email" placeholder="请输入需要绑定的邮箱" name="email" oninput="checkEmail()">
+									<span id="emailMsg" style="color: red;"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-3 col-sm-8 song">
 									<div class="checkbox">
 										<label>
-      <input type="checkbox"> 查看并同意<a href="#"> 《速运快递服务协议》</a>
+      <input type="checkbox" id ="checkbox"> 查看并同意<a href="#"> 《駃达快递服务协议》</a>
     </label>
 									</div>
 
@@ -103,7 +408,7 @@
 							</div>
 							<div class="form-group signbtn">
 								<div class="col-sm-offset-3 col-sm-8 song">
-									<a class="btn btn-danger" href="javascript:$('#customerForm').submit();">注册</a>
+									<a class="btn btn-danger" id="signupBtn" href="javascript:;" onclick="submitBtn()">注册</a>
 								</div>
 							</div>
 
@@ -112,12 +417,12 @@
 					</div>
 					<div class="col-md-3 introbox">
 						<div class="signintro">
-							<h5 class="redtext">注册成为速运会员，您可以享受更多的服务！</h5>
+							<h5 class="redtext">注册成为駃达会员，您可以享受更多的服务！</h5>
 							<ul>
 								<li class="list-group">积分奖励，电子运单专享特权</li>
 								<li class="list-group">快速理赔，保价优惠</li>
 								<li class="list-group">大陆偏远地区附加费减免</li>
-								<li class="list-group">快件路由订阅，快件信息管理，批量下单</li>
+								<li class="list-group">快件路由订阅，快件信息管理，快速下单</li>
 
 							</ul>
 						</div>
@@ -132,8 +437,8 @@
 		<footer>
 			<section class="copyright size12">
 				<div class="container">
-					<p class="text-center">地址：北京市昌平区建材城西路金燕龙办公楼一层 邮编：100096 电话：400-618-4000 传真：010-82935100 </p>
-					<p class="text-center">京ICP备08001421号京公网安备110108007702</p>
+					<p class="text-center">地址：上海市浦东新区  </p>
+					<p class="text-center">鲁东大学</p>
 				</div>
 			</section>
 		</footer>
@@ -144,7 +449,6 @@
 			// 控制器定义
 			signupApp.controller("signupCtrl", ["$scope","$http",function($scope,$http) {
 				$scope.btnMsg = "发送验证码";
-//				var active = true;
 				var active = 1;
 
 				var second = 60; // 倒计时60秒
@@ -153,32 +457,39 @@
 				
 				
 				$scope.getCheckCode = function() {
-//					alert(".....telephone2="+$scope.telephone2);
+					var target=event.target;
+				    if(target.className.indexOf("getcheckCodeBtn")>-1){
+					     // 加入判断,有"变灰"时返回
+					     alert("该手机号已注册");
+					     return ;
+					}
 					
-					if(active == 0) { //false
+					if(active == 0) { //限制多次点击按钮
 						return;
 					}
 					// 1 发送一个HTTP请求，通知服务器 发送短信给目标用户 
-					var regex = /^1(3|5|7|8)\d{9}$/;
+					var regex = /^1(3|5|7|8|6)\d{9}$/;
 					if(regex.test($scope.telephone2)) {
 						
 						// 校验通过
-						$http({
-							url: 'customer_sendSms.action',
-//							method: 'GET',
-//							params : {
-//								"telephone" : $scope.telephone2
-//							},
-							method: 'POST',
-							data : $.param({
-								"telephone" : $scope.telephone2,
-								"username" :$scope.username
-							}),
-							headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
-						}).error(function(data, status, headers, config) {
-							// 当响应以错误状态返回时调用
-							alert("发送短信出错，请联系管理员");
-						});
+							$.ajax({
+			 				url : "http://localhost:8081/logistics-bos-controller/sms/sendSms",
+			                type : "POST",
+			                async:true,
+			                jsonp:'jsoncallback',
+			                contentType : "application/json;charset=UTF-8",
+			                data : JSON.stringify({
+			                	telephone : $scope.telephone2,
+								username :$scope.username,
+								source:0,
+			                }),
+			                success:function(result) {
+			                },
+			                error:function(result){
+			                	// 当响应以错误状态返回时调用
+								alert("发送短信出错，请联系管理员");
+			                }
+			            });
 						
 					} else {
 						// 校验失败 
