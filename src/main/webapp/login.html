@@ -32,6 +32,7 @@ function submitBtn(){
 	    if(target.className.indexOf("signinBtn")>-1){
 		     // 加入判断,有"变灰"时返回
 		     alert("填写的内容不符合要求,不能注册");
+		     refresh();
 		     return false;
 		}else{
 			loading();
@@ -55,6 +56,7 @@ function submitBtn(){
 	                    	window.location.href="index.html#/myhome"; //登录成功
 
 	                    }else{
+	                    	refresh();
 	                    	load.style.display="none";
 	                    	alert(result.errorMsg);
 	                    }
@@ -267,7 +269,6 @@ function writeCheckcode2(){
 }
 
 function isEmptyForm1(){
-	
 	var telephone = $("#telephone2").val();
 	var password = $("#password").val();
 	var checkcode = $("#checkcode2").val();
@@ -290,7 +291,7 @@ function isEmptyForm1(){
 					signinBtn.className +=" signinBtn";
 				}
 			}else{
-				if(checkcode != "etu4"){
+				if(!compare()){
 					$("#checkcodeMsg2").html("验证码不正确");
 					if(signinBtn.className.indexOf("signinBtn")==-1){
 						signinBtn.className +=" signinBtn";
@@ -389,7 +390,7 @@ function isEmptyForm1(){
 								<span id="checkcodeMsg2" style="color: red;"></span>
 							</div>
 							<div class="col-sm-3">
-								<img src="images/icon/yanz.png"> 
+								<div id="v_container" style="width: 100px;height: 30px;"></div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -579,6 +580,17 @@ function show()
 			}]);
 		</script>
 <script type="text/javascript" src="js/login.js"></script>
+<script  type="text/javascript" src="js/gVerify.js"></script>
+<script>
+		var verifyCode = new GVerify("v_container");
+		function compare(){
+			var res = verifyCode.validate(document.getElementById("checkcode2").value);
+			return res;
+		}
+		function refresh(){
+			verifyCode.refresh();
+		}
+	</script>
 	</body>
 
 </html>
