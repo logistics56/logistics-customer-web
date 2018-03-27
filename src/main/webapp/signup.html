@@ -97,7 +97,7 @@ function telephinChang(){
             		$("#telephoneerror").html("");
             		signupBtn.className=signupBtn.className.replace(" signupBtn","");
             		getcheckCodeBtn.className=getcheckCodeBtn.className.replace(" getcheckCodeBtn","");
-            		return 1;
+            		$("#checkTelephone").val(1);
             	}else{
             		$("#telephonesuccess").html("");
             		$("#telephoneerror").html("该手机号已注册");
@@ -107,13 +107,13 @@ function telephinChang(){
             		if(getcheckCodeBtn.className.indexOf("getcheckCodeBtn")==-1){
             			getcheckCodeBtn.className +=" getcheckCodeBtn";
             		}
-            		return 0;
+            		$("#checkTelephone").val(0);
             	}
             },
             error:function(result){
             }
         });
-		
+		return $("#checkTelephone").val();
 	}else{
 		$("#telephonesuccess").html("");
 		$("#telephoneerror").html("手机号不符合规则");
@@ -325,7 +325,7 @@ function isEmpty(){
 			<nav class="navbar navbar-default">
 				<div class="container">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="#"><img src="images/icon/logo.png"></a>
+						<a class="navbar-brand" href="index.html"><img src="images/icon/logo.png"></a>
 						<span class="logintitle">用户注册</span>
 					</div>
 
@@ -333,6 +333,7 @@ function isEmpty(){
 
 			</nav>
 		</div>
+		<input type="hidden" id="checkTelephone">
 		<div class="container">
 			<!--mainsignup-->
 			<section class="mainsign">
