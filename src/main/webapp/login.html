@@ -8,6 +8,9 @@
 
 		<link rel="stylesheet" type="text/css" href="css/styleloginsign.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+		
+			<link href="css/login.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="css/loading.css"/>
 
 		<script  type="text/javascript" src="js/jquery.min.js"></script>
 		<script  type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -15,32 +18,100 @@
 		<script  type="text/javascript" src="js/self/effect.js"></script>
 		<script  type="text/javascript" src="js/self/validate.js"></script>
 
-		<!--[if IE]>
-    <script  type="text/javascript" src="js/html5.js"></script>
-    <script  type="text/javascript" src="js/respond.min.js"></script>
-    <![endif]-->
+<script type="text/javascript">
+//加载验证码
+function loadimage(){ 
+	document.getElementById("randImage").src = "layout/image.jsp?"+Math.random(); 
+	} 
+function check(){
+	var userno=document.getElementById("userno");
+	var pass=document.getElementById("pass");
+	var t1=document.getElementById("type1");
+	var t2=document.getElementById("type2");
+	var rand=document.getElementById("rand");
+	var load=document.getElementById("loading");
+var b=document.getElementById("bb");
+	var label=0;
+	if(userno.value==""){
+		alert("请填写账号！");
+	}else{
+		if(pass.value==""){
+			alert("请填写密码！");
+		}else{
+			if(t1.checked||t2.checked){
+				label=1;
+				}
+			if(label==1){
+				if(rand.value==""){
+					alert("请填写验证码！");
+				}else{
+				loading();//让loading字体的点动态加载
+				load.style.display="block";
+				setTimeout(sub, 5000);
+					}
+			}else{
+					alert("请选择用户类型！");
+				}
+		}
+	}
+	
+}
+function sub(){
+var form=document.getElementById("myform");
+form.submit();
+}
+//加载控制
+function loading(){
+var load=document.getElementById("loading");
+load.style.display="block";
+var count=1;
+setInterval(shu, 500);
+function shu(){
+var t=document.getElementById("text");
+var s="loading";
+for(var i=0;i<count;i++){
+	s+=".";
+}
+t.innerHTML = s;
+count++;
+if(count==4){
+count=1;
+}
+}
+}
+</script>
 	</head>
 
 	<body style="background-color: #f2f2f2;" >
-		<div class="logincontent">
-		<div class="loginnav">
-			<nav class="nav navbar-default">
-				<div class="container">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#"><img src="images/icon/logo.png"></a>
-						<span class="logintitle">用户登录</span>
-					</div>
 
-				</div>
-
-			</nav>
-		</div>
 		
-		<section class="mainlogin"  ng-app="validationApp" ng-controller="mainController">
-			<div class="container">
+		
+<div class="wrap">
+	<div class="banner-show" id="js_ban_content">
+		<div class="cell bns-01">
+			<div class="con">
+			</div>
+		</div>
+		<div class="cell bns-02" style="display:none;">
+			<div class="con">
+				
+				</div>
+		</div>
+		<div class="cell bns-03" style="display:none;">
+			<div class="con">
+				
+				 </div>
+		</div>
+	</div>
+	<div class="banner-control" id="js_ban_button_box">
+		<a href="javascript:;" class="left">左</a>
+		<a href="javascript:;" class="right">右</a> </div>
+	
+	<div class="container">
 				<div class="col-md-4 col-md-offset-7 loginbox">
 					<h4>用户登录</h4>
-					<form class="form-horizontal" id="customerForm" 
+			  <div class="table">
+			   		<form class="form-horizontal" id="customerForm" 
 						action="customer_login.action" method="post">
 
 						<div class="form-group">
@@ -76,7 +147,6 @@
 									   
 									   >
 					<p ng-show="userForm.password.$error.minlength" class="help-block">用户名太短了！</p>
-					<p ng-show="userForm.password.$error.maxlength" class="help-block">用户名太长了！</p>
 								
 							</div>
 						</div>
@@ -127,27 +197,47 @@
                        
                        
                         <div class="col-md-offset-3 col-md-8">
-							<a href="javascript:$('#customerForm').submit();" class="btn btn-danger" >登录</a>
+							<a href="javascript:;" class="btn btn-danger" onclick="loading()">登录</a>
 							
 						</div>
 						<p class="text-right clearfix">还不是我们的会员？<b><a href="signup.html">立即注册</a></b></p>
 																																			
 					</form>
-
+			   		
+			   		<!-- 进度加载器 -->
+			   		<div align="center" id="loading" style="display: none">
+			   		<main>
+			     		 <div class="loader">
+			      			  <div class="loader-inner line-scale">
+			        			  <div></div>
+			        			  <div></div>
+			        			  <div></div>
+			       			      <div></div>
+			        			  <div></div>
+			      			  </div>
+			      			  
+			      			  <span id="text">loading...</span>
+			     		 </div>    
+			 		 </main>
+			 		 </div>
+			 		 <script>
+			   			 document.addEventListener('DOMContentLoaded', function () {
+			     		 document.querySelector('main').className += 'loaded';
+			   			 });
+			  		</script>
+			   </div>
+			   </div>
 				</div>
-			</div>
-
-		</section>
+</div>
+ 
+		
 
 		<footer>
-			<section class="copyright size12">
-				<div class="container">
+				<div >
 										<p class="text-center">&copy; 2018 版权所有者：李振&nbsp;未经许可本系统任何资料不得转载或下载<br>  </p>
 					<p class="text-center">开发者：李振 &nbsp; 鲁东大学 &nbsp; 信息与电气工程学院 &nbsp; 软件本1401 &nbsp; 学号：20142204876 &nbsp;<a href="mailto:lizhn95@163.com"> Email:lizhn95@163.com </a></p>
 				</div>
-			</section>
 		</footer>
-</div>
 
 <script language="javascript">
 function show()
@@ -165,7 +255,7 @@ function show()
           
          }
 </script>
-
+<script type="text/javascript" src="js/login.js"></script>
 	</body>
 
 </html>

@@ -1,13 +1,6 @@
-body {
-	background: #F2F2F2
-}
+
 form .help-block{color:#d9534f}
-.loginbox {
-	background: #fff;
-	font-family: "微软雅黑";
-	padding: 2% 0;
-}
-.loginbox .form-horizontal{padding: 5px;}
+.loginbox .form-horizontal{padding: 0px;margin: 0px;}
 .form-group .forget {
 	float: right
 }
@@ -35,13 +28,6 @@ b {
 
 .loginnav .navbar-brand {
 	padding: 0
-}
-
-.mainlogin {
-	background: url(../images/show/suyun/loginbg.png) no-repeat;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	background-position: 0 0;
 }
 
 .clearfix {
@@ -80,10 +66,6 @@ b {
 	padding: 15px 0 10px 0;
 }
 
-section .container {
-	padding: 2% 0;
-	overflow: hidden;
-}
 
 .signup {
 	overflow: hidden;
