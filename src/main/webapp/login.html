@@ -17,8 +17,18 @@
 		<script  type="text/javascript" src="js/angular.min.js"></script>
 		<script  type="text/javascript" src="js/self/effect.js"></script>
 		<script  type="text/javascript" src="js/self/validate.js"></script>
+		<script  type="text/javascript" src="js/QuerySession.js"></script>
+
+
 
 <script type="text/javascript">
+
+
+window.onload = function(){
+if(typeof($.session.get('user')) != "undefined"){
+	window.location.href="index.html#/myhome";
+}
+}
 //为注册按钮，设置点击事件
 function submitBtn(){
 	var load=document.getElementById("loading");
@@ -53,6 +63,9 @@ function submitBtn(){
 	                success:function(result) {
 	                    var message= JSON.stringify(result);
 	                    if(result.result == 1){
+	                    	$.session.set('user', JSON.stringify(result.user));
+	                    	//var s = JSON.parse($.session.get('user'));
+	                    	//alert(s.cUsername);
 	                    	window.location.href="index.html#/myhome"; //登录成功
 
 	                    }else{

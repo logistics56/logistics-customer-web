@@ -2,7 +2,14 @@
 	描述：运单查询
 -->
 <link rel="stylesheet" type="text/css" href="css/stylesearch.css">
-
+<script  type="text/javascript" src="js/QuerySession.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+if(typeof($.session.get('user')) == "undefined"){
+	window.location.href="login.html";
+}
+}
+</script>
 <section class="searchbox">
 	<div class="container">
 		<!-- nav -->

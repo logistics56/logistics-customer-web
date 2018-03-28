@@ -2,7 +2,14 @@
 	描述：快件管理
 -->
 <link rel="stylesheet" type="text/css" href="css/styleexpress.css">
-
+<script  type="text/javascript" src="js/QuerySession.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+if(typeof($.session.get('user')) == "undefined"){
+	window.location.href="login.html";
+}
+}
+</script>
 <div class="express">
 	<div class="container">
 		<div class="col-md-2 tab-title ">

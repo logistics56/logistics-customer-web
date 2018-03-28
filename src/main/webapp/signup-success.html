@@ -11,11 +11,15 @@
 		<script  type="text/javascript" src="js/jquery.min.js"></script>
 		<script  type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script  type="text/javascript" src="js/self/effect.js"></script>
+		<script  type="text/javascript" src="js/QuerySession.js"></script>
 
-		<!--[if IE]>
-    <script  type="text/javascript" src="js/html5.js"></script>
-    <script  type="text/javascript" src="js/respond.min.js"></script>
-    <![endif]-->
+<script type="text/javascript">
+window.onload = function(){
+	if(typeof($.session.get('user')) != "undefined"){
+		window.location.href="index.html#/myhome";
+	}
+	}
+</script>
 	</head>
 	<body>
 		<!--head-->

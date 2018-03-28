@@ -3,6 +3,14 @@
 -->
 <link rel="stylesheet" type="text/css" href="css/styleuserinfo.css">
 <script src="js/self/addressadd.js"></script>
+<script  type="text/javascript" src="js/QuerySession.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+if(typeof($.session.get('user')) == "undefined"){
+	window.location.href="login.html";
+}
+}
+</script>
 <div class="userinfo" ng-app="userInfoModule">
 	<div class="container">
 		<div class="col-md-2 tab-title ">

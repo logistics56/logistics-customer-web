@@ -1,4 +1,18 @@
 <link rel="stylesheet" type="text/css" href="css/stylemyhome.css">
+<script  type="text/javascript" src="js/QuerySession.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+if(typeof($.session.get('user')) == "undefined"){
+	window.location.href="login.html";
+}else{
+	var s = JSON.parse($.session.get('user'));
+	if(s == null){
+		window.location.href="login.html";
+	}
+	$("#telephone").html(s.cTelephone);
+	}
+}
+</script>
 <div class="myhome">
 	<section class="bannerarea">
 		<div class="bannerimg"><img src="images/show/suyun/homebanner.png" class="img-responsive" alt="Responsive image"></div>
@@ -25,7 +39,7 @@
 				<div class="personinfo">
 					<div class="col-md-3  text-center model">
 						<img src="images/icon/suyun/photo.png" alt="我的头像" />
-						<p>13812345678</p>
+						<span id ="telephone"></span>
 						<p>
 							<a href="" class="btn btn-warning">VIP俱乐部</a>
 						</p>
