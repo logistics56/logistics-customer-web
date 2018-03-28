@@ -41,9 +41,9 @@ section .nav-tabs>li.active>a,section .nav-tabs>li.active>a:focus,section .nav-t
 section .tab-title{background:#eaeaea;}
 .jiangli{padding: 2%;    overflow: hidden;}
 .jiangli .xiaojf,.jiangli .tenjf,.jiangli .qianjf{padding-left: 8%;}
-.jiangli .xiaojf{background: url(../images/icon/suyun/ordercon01.png) no-repeat;}
-.jiangli .tenjf{background: url(../images/icon/suyun/ordercon02.png) no-repeat;}
-.jiangli .qianjf{background: url(../images/icon/suyun/ordercon03.png) no-repeat;}
+.jiangli .xiaojf{background: url(../images/icon/kuaida/anquan.png) no-repeat;background-size:62px 62px;}
+.jiangli .tenjf{background: url(../images/icon/kuaida/gaoxiao.png) no-repeat;background-size:62px 62px;}
+.jiangli .qianjf{background: url(../images/icon/kuaida/kekao.png) no-repeat;background-size:62px 62px;}
 #home .nav-tabs{background: #eaeaea;}
 #profile table{margin: 2px 0 7px;}
 /*tabcontent*/

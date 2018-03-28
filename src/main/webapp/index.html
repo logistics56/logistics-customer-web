@@ -21,15 +21,12 @@
 		<script  type="text/javascript" src="js/QuerySession.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	var signin = document.getElementById("signin");
-	var signup = document.getElementById("signup");
 	if(typeof($.session.get('user')) == "undefined"){
-		signin.style.display="block";
-		signup.style.display="none";
+		$("#signup").hide();
+		$("#signin").show();
 	}else{
-		signup.style.display="block";
-		signin.style.display="none";
-		signin.style.display="none";
+		$("#signin").hide();
+	 	$("#signup").show();
 	}
 }
 
@@ -79,19 +76,16 @@ if(typeof($.session.get('user')) == "undefined"){
 										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="快件管理" onclick="checkUser('express_manage')">快件管理</a>
 									</li>
 									<li>
-										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="账户管理" onclick="checkUser('userinfo')">账户管理</a>
-									</li>
-									<li>
 										<a href="javascript:;" data-placement="bottom" title="查询服务" onclick="checkUser('search')">查询服务</a>
 									</li>
 									<li>
-										<a href="javascript:;" data-placement="bottom" title="我的主页" onclick="checkUser('myhome')">我的主页</a>
+										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="账户管理" onclick="checkUser('userinfo')">我的主页</a>
 									</li>
 									<li>
 										<div id="signin">
 										<a href="login.html">登录</a>
 										</div>
-										<div id="signup">
+										<div id="signup" style="display: none;">
 										<a onclick="signupUser()">注销</a>
 										</div>
 									</li>
@@ -114,8 +108,6 @@ if(typeof($.session.get('user')) == "undefined"){
 										<ul class="list-unstyled inner">
 											<li>我要寄件</li>
 											<li>运单追踪</li>
-											<li>运费时效查询</li>
-											<li>收送范围查询</li>
 											<li>收寄标准查询</li>
 										</ul>
 									</li>
@@ -123,11 +115,7 @@ if(typeof($.session.get('user')) == "undefined"){
 								<ul class="list-unstyled list-inline">
 									<li>服务
 										<ul class="list-unstyled inner">
-											<li>速运即日</li>
-											<li>速运次晨</li>
-											<li>速运次日</li>
-											<li>速运隔日</li>
-											<li>速运标快</li>
+											<li>查询服务</li>
 
 										</ul>
 									</li>
@@ -136,9 +124,6 @@ if(typeof($.session.get('user')) == "undefined"){
 									<li>联系我们
 										<ul class="list-unstyled inner">
 											<li>客服热线</li>
-											<li>我要合作</li>
-											<li>采购信息</li>
-											<li>开放平台</li>
 
 										</ul>
 									</li>
@@ -146,9 +131,7 @@ if(typeof($.session.get('user')) == "undefined"){
 								<ul class="list-unstyled list-inline ">
 									<li>企业
 										<ul class="list-unstyled inner">
-											<li>速运概况</li>
-											<li>服务网络</li>
-											<li>速运航空</li>
+											<li>駃达概况</li>
 
 										</ul>
 									</li>
@@ -160,7 +143,7 @@ if(typeof($.session.get('user')) == "undefined"){
 									<li>联系方式
 										<ul class="list-unstyled inner">
 											<li>客服热线</li>
-											<li><span class="tel">400-618-4000</span></li>
+											<li><span class="tel">123-456-6666</span></li>
 											<li>在线客服</li>
 											<li><span class="bigtel">进入在线客服</span></li>
 

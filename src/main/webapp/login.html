@@ -26,7 +26,7 @@
 
 window.onload = function(){
 if(typeof($.session.get('user')) != "undefined"){
-	window.location.href="index.html#/myhome";
+	window.location.href="index.html#/userinfo";
 }
 }
 //为注册按钮，设置点击事件
@@ -66,7 +66,7 @@ function submitBtn(){
 	                    	$.session.set('user', JSON.stringify(result.user));
 	                    	//var s = JSON.parse($.session.get('user'));
 	                    	//alert(s.cUsername);
-	                    	window.location.href="index.html#/myhome"; //登录成功
+	                    	window.location.href="index.html#/userinfo"; //登录成功
 
 	                    }else{
 	                    	refresh();
@@ -421,7 +421,7 @@ function isEmptyForm1(){
 						
 						
 						<div id="format2" style="display:none;">
-							<div class="signin" ng-app="signinApp" ng-controller="signupCtrl">
+							<div class="signin" ng-app="signinApp" ng-controller="signinCtrl">
 									<div class="form-group">
 										<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>手机号</label>
 										<div class="col-sm-8">
@@ -520,7 +520,7 @@ function show()
 			// 模块定义 
 			var signinApp = angular.module("signinApp", []);
 			// 控制器定义
-			signinApp.controller("signupCtrl", ["$scope","$http",function($scope,$http) {
+			signinApp.controller("signinCtrl", ["$scope","$http",function($scope,$http) {
 				$scope.btnMsg = "发送验证码";
 				var active = 1;
 
