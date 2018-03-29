@@ -26,10 +26,10 @@ if(typeof($.session.get('user')) == "undefined"){
 			</ul>
 		</div>
 		<!-- Tab panes -->
-		<div class="col-md-10 tabcontent">
+		<div class="col-md-10 tabcontent" ng-controller="userInfoCtrl">
 			<div class="tab-content vertical-tab-content">
 				<!--个人信息-->
-				<div role="tabpanel" class="tab-pane active" id="aa">
+				<div role="tabpanel" class="tab-pane active" ng id="aa">
 					<div class="areatitle">
 						<h4><span class="title">基本资料</span></h4>
 					</div>
@@ -37,24 +37,24 @@ if(typeof($.session.get('user')) == "undefined"){
 						<div class="col-md-8">
 							<table class="table ">
 								<tr>
-									<td>姓名：</td>
-									<td>公司：</td>
+									<td>姓名：<label ng-bind="name"></label></td>
+									<td>公司：<label ng-bind="company"></label></td>
 								</tr>
 								<tr>
-									<td>生日：</td>
-									<td>部门：</td>
+									<td>生日：<label ng-bind="birthday"></label></td>
+									<td>部门：<label ng-bind="department"></label></td>
 								</tr>
 								<tr>
-									<td>性别：</td>
-									<td>职位：</td>
+									<td>性别：<label ng-bind="sex"></label></td>
+									<td>职位：<label ng-bind="position"></label></td>
 								</tr>
 								<tr>
-									<td>座机：</td>
-									<td>手机：</td>
+									<td>座机：<label ng-bind="mobile"></label></td>
+									<td>手机：<label ng-bind="telephone"></label></td>
 								</tr>
 								<tr>
-									<td>Emial：</td>
-									<td>地址：</td>
+									<td>Emial：<label ng-bind="email"></label></td>
+									<td>地址：<label ng-bind="address"></label></td>
 								</tr>
 
 							</table>
@@ -76,7 +76,7 @@ if(typeof($.session.get('user')) == "undefined"){
 					</div>
 					<div class="col-md-8">
 						<div class="info">
-							<p>手机号码 15210740955<span class="right"><a href="#">修改</a></span></p>
+							<p>手机号码 :<label ng-bind="telephone2" /><span class="right"><a href="#">修改</a></span></p>
 							<p>邮箱地址 您尚未绑定油箱<span class="right"><a href="#">立即绑定</a></span></p>
 
 						</div>
@@ -111,7 +111,7 @@ if(typeof($.session.get('user')) == "undefined"){
 
 					</ul>
 					<!-- Tab panes -->
-					<div class="tab-content" ng-controller="userInfoCtrl">
+					<div class="tab-content" >
 						<div class="fixedbtn">
 							<div class="col-md-4 btnaddress">
 								<button class="btn btn-default">删除</button>

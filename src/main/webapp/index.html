@@ -194,14 +194,24 @@ if(typeof($.session.get('user')) == "undefined"){
 				})
 			}]);
 			
-			// 账户管理 控制器 
+			// 我的主页  控制器 
 			bosfore_app.controller("userInfoCtrl",["$scope",function($scope){
+				var s = JSON.parse($.session.get('user'));
+				$scope.name = s.cUsername;
+				$scope.company = s.cCompany;
+				$scope.birthday = s.cBrithday;
+				$scope.department = s.cDepartment;
+				$scope.sex = s.cSex;
+				$scope.position = s.cPosition;
+				$scope.mobile = s.cMobilephone;
+				$scope.telephone = s.cTelephone;
+				$scope.email = s.cEmail;
+				$scope.address = s.cAddress;
+				$scope.telephone2 = s.cTelephone;
 			}]);
 			
 			// 在线下单控制器
 			bosfore_app.controller("orderCtrl",["$scope",function($scope){
-				
-				
 				
 				
 			}]);
