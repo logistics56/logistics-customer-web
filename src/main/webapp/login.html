@@ -320,6 +320,31 @@ function isEmptyForm1(){
 			}
 		}
 }
+
+
+function forgotPassword(){
+	var telephone = $("#telephone2").val();
+	if(telephone ==""){
+		alert("请输入账号！");
+		return false;
+	}else{
+		$.ajax({
+			url : "http://localhost:8081/logistics-bos-controller/customer/forgotPassword",
+            type : "POST",
+            async:true,
+            jsonp:'jsoncallback',
+            contentType : "application/json;charset=UTF-8",
+            data : JSON.stringify({
+            	telephone:telephone,
+            }),
+            success:function(result) {
+            	alert(result.errorMsg);
+            },
+            error:function(result){
+            }
+        });
+	}
+}
 </script>
 </head>
 
@@ -457,7 +482,11 @@ function isEmptyForm1(){
 							<a href="javascript:;" id="signinBtn" class="btn btn-danger" onclick="submitBtn()">登录</a>
 							
 						</div>
-						<p class="text-right clearfix">还不是我们的会员？<b><a href="signup.html">立即注册</a></b></p>
+						<p class="text-right clearfix">还不是我们的会员？<b><a href="signup.html">立即注册</a></b>
+						<span id="forgotbox">
+						&nbsp;&nbsp;如果您忘记了密码，可以<b><a href="javascript:;" id="forgotPassword" onclick="forgotPassword()">找回密码</a></b>
+						</span>
+						</p>
 																																			
 					</form>
 			   		
@@ -502,15 +531,18 @@ function show()
          var format1 = document.getElementById("format1");
          var format2 = document.getElementById("format2");
          var format2 = document.getElementById("format2");
+         var forgotbox = document.getElementById("forgotbox");
         
          if(event.target.value === "0"){
            format1.style.display="";
            format2.style.display="none";
+           forgotbox.style.display="";
            $("#selected").val('0');
             
          } else if(event.target.value === "1") {
            format1.style.display="none";
            format2.style.display="";
+           forgotbox.style.display="none";
            $("#selected").val('1');
          }
           

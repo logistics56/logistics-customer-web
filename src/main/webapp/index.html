@@ -5,7 +5,8 @@
 		<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>速运快递</title>
-
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+		<link rel="bookmark" href="/favicon.ico"/>
 		<link rel="stylesheet" type="text/css" href="css/styleindex.css">
 		<link rel="stylesheet" type="text/css" href="css/public.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css">
@@ -21,12 +22,14 @@
 		<script  type="text/javascript" src="js/QuerySession.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	var signup = document.getElementById("signup");
+	var signin = document.getElementById("signin");
 	if(typeof($.session.get('user')) == "undefined"){
-		$("#signup").hide();
-		$("#signin").show();
+		signup.style.display="none";
+		signin.style.display="";
 	}else{
-		$("#signin").hide();
-	 	$("#signup").show();
+		signup.style.display="";
+		signin.style.display="none";
 	}
 }
 
@@ -73,7 +76,7 @@ if(typeof($.session.get('user')) == "undefined"){
 										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="在线下单" onclick="checkUser('order')">在线下单</a>
 									</li>
 									<li>
-										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="快件管理" onclick="checkUser('express_manage')">快件管理</a>
+										<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="订单管理" onclick="checkUser('express_manage')">快件管理</a>
 									</li>
 									<li>
 										<a href="javascript:;" data-placement="bottom" title="查询服务" onclick="checkUser('search')">查询服务</a>
@@ -207,7 +210,6 @@ if(typeof($.session.get('user')) == "undefined"){
 				$scope.telephone = s.cTelephone;
 				$scope.email = s.cEmail;
 				$scope.address = s.cAddress;
-				$scope.telephone2 = s.cTelephone;
 			}]);
 			
 			// 在线下单控制器
