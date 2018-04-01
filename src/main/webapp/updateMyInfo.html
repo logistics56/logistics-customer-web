@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>我的駃达-编辑用户信息</title>
+
+		<link rel="stylesheet" type="text/css" href="css/styleloginsign.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/self/effect.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script  type="text/javascript" src="js/QuerySession.js"></script>
+		
+<style type="text/css">
+                  #tips {
+                float: left;
+                margin: 2px 0 0 20px;
+            }
+
+            #tips span {
+                float: left;
+                width: 40px;
+                height: 20px;
+                color: white;
+                background: green;
+                margin-right: 2px;
+                line-height: 20px;
+                text-align: center;
+            }
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	if(typeof($.session.get('user')) == "undefined"){
+		window.location.href="login.html";
+	}
+	}
+
+	// 为注册按钮，设置点击事件
+function submitBtn(){
+		isEmpty();
+		var target=event.target;
+	    if(target.className.indexOf("signupBtn")>-1){
+		     // 加入判断,有"变灰"时返回
+		     alert("填写的内容不符合要求,不能注册");
+		     return false;
+		}else{
+			if($("input[type='checkbox']").is(':checked')){
+				$.ajax({
+	 				url : "http://localhost:8081/logistics-bos-controller/customer/saveData",
+	                type : "POST",
+	                async:true,
+	                jsonp:'jsoncallback',
+	                contentType : "application/json;charset=UTF-8",
+	                data : JSON.stringify({
+						telephone :$("#telephone").val(),
+	            		username :$("#username").val(),
+	            		checkcode :$("#checkcode").val(),
+	            		password :$("#password").val(),
+	            		email :$("#email").val(),
+	            		source:0,
+	                }),
+	                success:function(result) {
+	                    var message= JSON.stringify(result);
+	                    if(result.result == 1){
+	                    	window.location.href="signup-success.html"; //注册成功
+
+	                    }else{
+	                    	alert(result.errorMsg);
+	                    }
+	                },
+	                error:function(result){
+	                    alert("操作失败");
+	                }
+	            });
+			}else{
+				alert("请查看协议");
+			}
+		}
+	};
+
+</script>
+
+	</head>
+
+	<body>
+		<!--head-->
+		<div class="loginnav">
+			<nav class="navbar navbar-default">
+				<div class="container">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="index.html"><img src="images/icon/logo.png"></a>
+						<span class="logintitle">编辑用户信息</span>
+					</div>
+
+				</div>
+
+			</nav>
+		</div>
+		<input type="hidden" id="checkTelephone">
+		<div class="container" >
+			<!--mainsignup-->
+			<section class="mainsign" >
+				<div class="headnav">
+
+				</div>
+
+				<div style="overflow: hidden;border: 1px solid #D1D1D1;font-family: '微软雅黑';text-align: center;">
+				<h4>请填写真实信息</h4>
+					<div style="margin-left: 360px">
+						<form id="customerForm" method="post" class="form col-md-6">
+						<div class="form-group">
+							<label for="inputaccount" class="col-sm-3 control-label">个人头像</label>
+							<div class="col-sm-8">
+								<img src="images/show/photo.png" class="img-responsive" align="我的头像" /><b>您需要上传200x200以上且小于1M的 JPG格式的图片</b>
+								<input type="file" value="上传头像">
+							</div>
+
+						</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>姓名</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="telephone" id="telephone" ng-model="telephone2" oninput="telephinChang()" placeholder="请输入姓名"><span style="color: green;" id="telephonesuccess"></span><span style="color: red;" id="telephoneerror"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>性别</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入性别" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>住址</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入住址" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label">生日</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入用户姓名" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label">座机</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入座机号" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label">公司</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入公司名" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label">部门</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入部门名称" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label">职位</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入职位" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+								</div>
+							</div>
+							
+							<div class="form-group signbtn">
+								<div class="col-sm-offset-3 col-sm-8 song">
+									<a class="btn btn-danger" id="signupBtn" href="javascript:;" onclick="submitBtn()">提交</a>
+								</div>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<!--foot-->
+		<footer>
+			<section class="copyright size12">
+				<div class="container">
+					<p class="text-center">&copy; 2018 版权所有者：李振&nbsp;未经许可本系统任何资料不得转载或下载<br>  </p>
+					<p class="text-center">开发者：李振 &nbsp; 鲁东大学 &nbsp; 信息与电气工程学院 &nbsp; 软件本1401 &nbsp; 学号：20142204876 &nbsp;<a href="mailto:lizhn95@163.com"> Email:lizhn95@163.com </a></p>
+				</div>
+			</section>
+		</footer>
+
+	</body>
+
+</html>

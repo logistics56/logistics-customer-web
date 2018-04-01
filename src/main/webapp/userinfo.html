@@ -17,11 +17,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			<h4 class="accounttitle">账号管理</h4>
 			<ul class="nav nav-tab vertical-tab" role="tablist" id="vtab">
 				<li role="presentation" class="pieceorder  active">
-					<a href="#aa" aria-controls="aa" role="tab" data-toggle="tab">个人信息</a>
-				</li>
-
-				<li role="presentation" class="pieceorder">
-					<a href="#bb" aria-controls="bb" role="tab" data-toggle="tab">地址薄</a>
+					<a href="" aria-controls="aa" role="tab" data-toggle="tab">个人信息</a>
 				</li>
 			</ul>
 		</div>
@@ -60,11 +56,9 @@ if(typeof($.session.get('user')) == "undefined"){
 							</table>
 						</div>
 						<div class="col-md-4">
-							<p>个人头像：<span class="right"><a href="#">编辑</a></span></p>
+							<p>个人头像：<span class="right"><a href="updateMyInfo.html">编辑</a></span></p>
 							<div class="text-center">
 								<img src="images/show/photo.png" class="img-responsive" align="我的头像" />
-								<p class="text-center">上传头像</p>
-								<p class="text-center">您需要上传200x200以上且小于1M的 JPG格式的图片
 								</p>
 							</div>
 
@@ -84,12 +78,13 @@ if(typeof($.session.get('user')) == "undefined"){
 					<div class="areatitle clearfix">
 						<h4><span class="title">密码设置</span></h4>
 					</div>
-					<div class="info">
-						<p>
-							<a href="#">修改密码</a>
-						</p>
-						<p>登录后修改您的駃达账号密码</p>
-						
+					<div class="col-md-8">
+						<div class="info">
+							<p>
+								登录后修改您的駃达账号密码<span class="right"><a href="#">修改密码</a></span>
+							</p>
+							
+						</div>
 					</div>
 
 				</div>
