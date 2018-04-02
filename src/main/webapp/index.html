@@ -210,6 +210,12 @@ if(typeof($.session.get('user')) == "undefined"){
 				$scope.telephone = s.cTelephone;
 				$scope.email = s.cEmail;
 				$scope.address = s.cAddress;
+				if(s.cImg != null){
+					//$scope.myimg ="customerPhotos/"+user.cImg;
+					$scope.myimg ="images/show/photo.png";
+				}else{
+					$scope.myimg ="images/show/photo.png";
+				}
 			}]);
 			
 			// 在线下单控制器

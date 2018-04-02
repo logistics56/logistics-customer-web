@@ -10,6 +10,26 @@ if(typeof($.session.get('user')) == "undefined"){
 	window.location.href="login.html";
 }
 }
+
+function binding(){
+	var user = JSON.parse($.session.get('user'));
+	$.ajax({
+		url : "http://localhost:8081/logistics-bos-controller/customer/binding",
+        type : "POST",
+        async:true,
+        jsonp:'jsoncallback',
+        contentType : "application/json;charset=UTF-8",
+        data : JSON.stringify({
+        	telephone:user.cTelephone,
+        	email:user.cEmail,
+        }),
+        success:function(result) {
+        	alert(result.errorMsg);
+        },
+        error:function(result){
+        }
+    });
+}
 </script>
 <div class="userinfo" ng-app="userInfoModule">
 	<div class="container">
@@ -58,7 +78,7 @@ if(typeof($.session.get('user')) == "undefined"){
 						<div class="col-md-4">
 							<p>个人头像：<span class="right"><a href="updateMyInfo.html">编辑</a></span></p>
 							<div class="text-center">
-								<img src="images/show/photo.png" class="img-responsive" align="我的头像" />
+								<img  src="{{myimg}}"   width="123" height="123" style=" border-radius:62.5px;border: #808080 solid 1px;" ng-bind="preview" class="img-responsive" align="我的头像" />
 								</p>
 							</div>
 
@@ -70,7 +90,7 @@ if(typeof($.session.get('user')) == "undefined"){
 					</div>
 					<div class="col-md-8">
 						<div class="info">
-							<p>邮箱地址 您尚未绑定油箱<span class="right"><a href="#">立即绑定</a></span></p>
+							<p>邮箱地址 您尚未绑定油箱<span class="right"><a href="javascript:;" onclick="binding()">立即绑定</a></span></p>
 
 						</div>
 					</div>
@@ -81,7 +101,7 @@ if(typeof($.session.get('user')) == "undefined"){
 					<div class="col-md-8">
 						<div class="info">
 							<p>
-								登录后修改您的駃达账号密码<span class="right"><a href="#">修改密码</a></span>
+								登录后修改您的駃达账号密码<span class="right"><a href="changepwd.html">修改密码</a></span>
 							</p>
 							
 						</div>
