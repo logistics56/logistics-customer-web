@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 	<head>
@@ -14,6 +13,8 @@
 		<script type="text/javascript" src="js/self/effect.js"></script>
 		<script type="text/javascript" src="js/angular.min.js"></script>
 		<script  type="text/javascript" src="js/QuerySession.js"></script>
+		<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+		<script type="text/javascript" src="js/dateUtils.js"></script>
 		
 <style type="text/css">
                   #tips {
@@ -36,52 +37,150 @@
 window.onload = function(){
 	if(typeof($.session.get('user')) == "undefined"){
 		window.location.href="login.html";
+	}else{
+		var user = JSON.parse($.session.get('user'));
+		if(user.cImg != null){
+			$("#preview").attr('src',user.cImg);
+		}if(user.cUsername != null){
+			$("#username").val(user.cUsername);
+		}
+		if(user.cSex != null){
+			$("#sex").val(user.cSex);
+		}
+		if(user.cBrithday != null){
+			var birth = new Date(user.cBrithday).pattern("yyyy-MM-dd");
+			$("#birth").val(birth);
+		}
+		if(user.cAddress != null){
+			$("#address").val(user.cAddress);
+		}
+		if(user.cMobilephone != null){
+			$("#mobile").val(user.cMobilephone);
+		}
+		if(user.cCompany != null){
+			$("#company").val(user.cCompany);
+		}
+		if(user.cDepartment != null){
+			$("#department").val(user.cDepartment);
+		}
+		if(user.cPosition != null){
+			$("#position").val(user.cPosition);
+		}
 	}
 	}
 
 	// 为注册按钮，设置点击事件
 function submitBtn(){
-		isEmpty();
-		var target=event.target;
-	    if(target.className.indexOf("signupBtn")>-1){
-		     // 加入判断,有"变灰"时返回
-		     alert("填写的内容不符合要求,不能注册");
-		     return false;
-		}else{
-			if($("input[type='checkbox']").is(':checked')){
-				$.ajax({
-	 				url : "http://localhost:8081/logistics-bos-controller/customer/saveData",
-	                type : "POST",
-	                async:true,
-	                jsonp:'jsoncallback',
-	                contentType : "application/json;charset=UTF-8",
-	                data : JSON.stringify({
-						telephone :$("#telephone").val(),
-	            		username :$("#username").val(),
-	            		checkcode :$("#checkcode").val(),
-	            		password :$("#password").val(),
-	            		email :$("#email").val(),
-	            		source:0,
-	                }),
-	                success:function(result) {
-	                    var message= JSON.stringify(result);
-	                    if(result.result == 1){
-	                    	window.location.href="signup-success.html"; //注册成功
+				var user = JSON.parse($.session.get('user'));
+				$.ajaxFileUpload({
+					url: "http://localhost:8081/logistics-bos-controller/customer/updateFile?telephone="+user.cTelephone,
+					type: "POST",
+				    async : false,
+					secureuri : false,//是否启用安全提交，默认为false
+				    fileElementId:'file_upload',//文件选择框的id属性
+				    dataType: 'json',//服务器返回的格式
+					success: function(data){
+		                    if(data.result == 1){
+		                    	$.ajax({
+		        	 				url : "http://localhost:8081/logistics-bos-controller/customer/updateInfo",
+		        	                type : "POST",
+		        	                async:true,
+		        	                jsonp:'jsoncallback',
+		        	                contentType : "application/json;charset=UTF-8",
+		        	                data:JSON.stringify({
+		        	                	telephone:user.cTelephone,
+		        	                	username:$("#username").val(),
+		        	                	sex:$("#sex").val(),
+		        	                	birth:$("#birth").val(),
+		        	                	address:$("#address").val(),
+		        	                	mobile:$("#mobile").val(),
+		        	                	company:$("#company").val(),
+		        	                	department:$("#department").val(),
+		        	                	position:$("#position").val(),
+		        	                }),
+		        	                success:function(result) {
+		        	                    var message= JSON.stringify(result);
+		        	                    if(result.result == 1){
+		        	                    	$.session.set('user', JSON.stringify(result.user));
+		        	                    	//var s = JSON.parse($.session.get('user'));
+		        	                    	//alert(s.cUsername);
+		        	                    	window.location.href="index.html#/userinfo"; //登录成功
 
-	                    }else{
-	                    	alert(result.errorMsg);
-	                    }
-	                },
-	                error:function(result){
-	                    alert("操作失败");
-	                }
-	            });
-			}else{
-				alert("请查看协议");
-			}
-		}
+		        	                    }else{
+		        	                    	alert("信息更新失败");
+		        	                    }
+		        	                },
+		        	                error:function(result){
+		        	                    alert("信息更新失败");
+		        	                }
+		        	            });
+		                    }else{
+		                    	alert("信息更新失败");
+		                    }
+				    },
+				    error: function (data, status, e){
+				    	alert("信息跟新失败");
+				    }
+				});
 	};
 
+	
+	
+	$(function() {
+		$("#file_upload").change(function() {
+		var fileSize = 0;
+		var $file = $(this);
+		var fileObj = $file[0];
+		var windowURL = window.URL || window.webkitURL;
+		var dataURL;
+		var $img = $("#preview");
+		 
+		if(fileObj && fileObj.files && fileObj.files[0]){
+		dataURL = windowURL.createObjectURL(fileObj.files[0]);
+		fileSize = fileObj.files[0].size;   
+		var size = fileSize / 1024;
+        if(size>100){  
+            alert("图片不能大于100KB");
+            $file.val("");
+            return
+           }else{
+        	   var name =$file.val();
+        	   var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
+        	   if(fileName !="jpg" ){
+        	          alert("请选择jpg图片格式文件上传！");
+        	          $file.val("");
+        	            return
+        	        }else{
+						$img.attr('src',dataURL);
+        	        }
+           }
+		}else{
+		dataURL = $file.val();
+		var imgObj = document.getElementById("preview");
+		 var file2 = fileSystem.GetFile (dataURL);     
+         fileSize = file2.Size;   
+         var size = fileSize / 1024;
+         if(size>100){  
+             alert("图片不能大于100KB");
+             $file.val("");
+             return;
+            }else{
+            	var fileName = dataURL.substring(dataURL.lastIndexOf(".")+1).toLowerCase();
+            	if(fileName !="jpg" ){
+      	          alert("请选择jpg图片格式文件上传！");
+      	        $file.val("");
+      	            return;
+      	        }else{
+					// 两个坑:
+					// 1、在设置filter属性时，元素必须已经存在在DOM树中，动态创建的Node，也需要在设置属性前加入到DOM中，先设置属性在加入，无效；
+					// 2、src属性需要像下面的方式添加，上面的两种方式添加，无效；
+					imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+					imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+      	        }
+            }
+		}
+		});
+		});
 </script>
 
 	</head>
@@ -108,70 +207,79 @@ function submitBtn(){
 
 				</div>
 
-				<div style="overflow: hidden;border: 1px solid #D1D1D1;font-family: '微软雅黑';text-align: center;">
+				<div style="overflow: hidden;border: 1px solid #D1D1D1; font-family: '微软雅黑';text-align: center;">
 				<h4>请填写真实信息</h4>
 					<div style="margin-left: 360px">
 						<form id="customerForm" method="post" class="form col-md-6">
 						<div class="form-group">
 							<label for="inputaccount" class="col-sm-3 control-label">个人头像</label>
 							<div class="col-sm-8">
-								<img src="images/show/photo.png" class="img-responsive" align="我的头像" /><b>您需要上传200x200以上且小于1M的 JPG格式的图片</b>
-								<input type="file" value="上传头像">
+								<img src="images/show/photo.png" id="preview" width="123" height="123" style=" border-radius:62.5px;border: #808080 solid 1px;" class="img-responsive" align="我的头像" />
+								<b>您需要上传200x200以上且小于1M的 JPG格式的图片</b>
+								<input type="file" id="file_upload" name="file" value="上传头像" accept="image/jpg" >
 							</div>
 
 						</div>
+						
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>姓名</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="telephone" id="telephone" ng-model="telephone2" oninput="telephinChang()" placeholder="请输入姓名"><span style="color: green;" id="telephonesuccess"></span><span style="color: red;" id="telephoneerror"></span>
+									<input type="text" class="form-control" name="username" id="username" ng-model="username" placeholder="请输入姓名">
 								</div>
 							</div>
+							
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>性别</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入性别" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+									<select id="sex" style="width: 100%">
+										<option value="1">男</option>
+										<option value="2">女</option>
+									</select>
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>住址</label>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入住址" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label">生日</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入用户姓名" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+									<input type="date" class="form-control" name="birth" id="birth"  ng-model="birth" placeholder="请输入生日" >
 								</div>
 							</div>
+							
+							<div class="form-group">
+								<label for="inputaccount" class="col-sm-3 control-label"><b>*</b>住址</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="address" id="address"  ng-model="address" placeholder="请输入住址" >
+								</div>
+							</div>
+							
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label">座机</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入座机号" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+									<input type="text" class="form-control" name="mobile" id="mobile"  ng-model="mobile" placeholder="请输入座机号" >
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label">公司</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入公司名" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+									<input type="text" class="form-control" name="company" id="company"  ng-model="company" placeholder="请输入公司名">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label">部门</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入部门名称" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
+									<input type="text" class="form-control" name="department" id="department"  ng-model="department" placeholder="请输入部门名称">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputaccount" class="col-sm-3 control-label">职位</label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="username" id="username"  ng-model="username" placeholder="请输入职位" oninput="writeName()"><span style="color: red;" id="usernameMsg"></span>
-								</div>
+									<input type="text" class="form-control" name="position" id="position"  ng-model="position" placeholder="请输入职位" >
+							</div>
 							</div>
 							
-							<div class="form-group signbtn">
+							<div class="form-group">
 								<div class="col-sm-offset-3 col-sm-8 song">
-									<a class="btn btn-danger" id="signupBtn" href="javascript:;" onclick="submitBtn()">提交</a>
+									<a class="btn btn-danger" id="update" href="javascript:;" onclick="submitBtn()">提交</a>
 								</div>
 							</div>
 
