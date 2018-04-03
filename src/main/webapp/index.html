@@ -235,43 +235,89 @@ if(typeof($.session.get('user')) == "undefined"){
 				}
 			}]);
 			
-			// 在线下单控制器
+			// 在线下单控制器(寄件人)
 			bosfore_app.controller("orderCtrl",["$scope",function($scope){
-				var firstnames = ['Laurent', 'Blandine', 'Olivier', 'Max'];
-			    var lastnames = ['Renard', 'Faivre', 'Frere', 'Eponge'];
-			    var dates = ['1987-05-21', '1987-04-25', '1955-08-27', '1966-06-06'];
+				var names = ['寄件人', '寄件人', '寄件人', '寄件人'];
+			    var mobiles = ['15653506679', '15653506679', '15653506679', '15653506679'];
+			    var companys = ['阿里巴巴', '阿里巴巴', '阿里巴巴', '阿里巴巴'];
+			    var addresss = ['上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇'];
 			    var id = 1;
 			    function generateRandomItem(id) {
 
-			        var firstname = firstnames[id-1];
-			        var lastname = lastnames[id-1];
-			        var birthdate = dates[id-1];
-			        var balance = Math.floor(Math.random() * 2000);
+			        var name = names[id-1];
+			        var mobile = mobiles[id-1];
+			        var company = companys[id-1];
+			        var address = addresss[id-1];
 
 			        return {
 			            id: id,
-			            firstName: firstname,
-			            lastName: lastname,
-			            birthDate: new Date(birthdate),
-			            balance: balance
+			            name: name,
+			            mobile: mobile,
+			            company: company,
+			            address: address
 			        }
 			    }
 			    $scope.rowCollection = [];
 			    $scope.itemsByPage=5;
-			    for (id; id < 200; id++) {
+			    for (id; id < 5; id++) {
 			        $scope.rowCollection.push(generateRandomItem(id));
 			    }
 			    
-			    //remove to the real data holder
+			    //use to the real data holder
 			    $scope.useRow = function useRow(row) {
 			        var index = $scope.rowCollection.indexOf(row);
 			        if (index !== -1) {
-			        	alert($scope.rowCollection[index].firstName);
-			            //$scope.rowCollection.splice(index, 1);
+			        	alert($scope.rowCollection[index].name);
 			        }
 			    }
-			    $scope.predicates = ['firstName', 'lastName', 'birthDate', 'balance'];
-			    $scope.selectedPredicate = $scope.predicates[0];
+			    
+			    $scope.clearVal = function(){
+					 $scope.sendAddress = "" ; // 模型设置为空 
+				 }
+			    
+			}]);
+			
+			
+			// 在线下单控制器(收件人)
+			bosfore_app.controller("orderCtrl2",["$scope",function($scope){
+				var names = ['收件人', '收件人', '收件人', '收件人'];
+			    var mobiles = ['16602107876', '16602107876', '16602107876', '16602107876'];
+			    var companys = ['携程', '携程', '携程', '携程'];
+			    var addresss = ['上海市长宁区金钟路', '上海市长宁区金钟路', '上海市长宁区金钟路', '上海市长宁区金钟路'];
+			    var id = 1;
+			    function generateRandomItem(id) {
+
+			        var name = names[id-1];
+			        var mobile = mobiles[id-1];
+			        var company = companys[id-1];
+			        var address = addresss[id-1];
+
+			        return {
+			            id: id,
+			            name: name,
+			            mobile: mobile,
+			            company: company,
+			            address: address
+			        }
+			    }
+			    $scope.rowCollection = [];
+			    $scope.itemsByPage=5;
+			    for (id; id < 20; id++) {
+			        $scope.rowCollection.push(generateRandomItem(id));
+			    }
+			    
+			    //use to the real data holder
+			    $scope.useRow = function useRow(row) {
+			        var index = $scope.rowCollection.indexOf(row);
+			        if (index !== -1) {
+			        	alert($scope.rowCollection[index].name);
+			        }
+			    }
+			    
+			    
+			    $scope.clearVal = function(){
+			    	 $scope.recAddress = "济南市历城区山东国际机场" ; // 模型设置为空 
+				 }
 			    
 			}]);
 			
