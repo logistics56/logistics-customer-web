@@ -17,6 +17,7 @@
 		<script src="js/self/effect.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/angular.min.js"></script>
 		<script type="text/javascript" src="js/angular-route.min.js"></script>
+		<script type="text/javascript" src="js/dateUtils.js"></script>
 		
 		
 <script async="" src="//www.google-analytics.com/analytics.js"></script>		
@@ -219,9 +220,13 @@ if(typeof($.session.get('user')) == "undefined"){
 				var s = JSON.parse($.session.get('user'));
 				$scope.name = s.cUsername;
 				$scope.company = s.cCompany;
-				$scope.birthday = s.cBrithday;
+				$scope.birthday = new Date(s.cBrithday).pattern("yyyy-MM-dd");;
 				$scope.department = s.cDepartment;
-				$scope.sex = s.cSex;
+				if(s.cSex == 1){
+					$scope.sex = "男";
+				}else{
+					$scope.sex = "女";
+				}
 				$scope.position = s.cPosition;
 				$scope.mobile = s.cMobilephone;
 				$scope.telephone = s.cTelephone;

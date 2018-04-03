@@ -81,47 +81,48 @@ function submitBtn(){
 				    dataType: 'json',//服务器返回的格式
 					success: function(data){
 		                    if(data.result == 1){
-		                    	$.ajax({
-		        	 				url : "http://localhost:8081/logistics-bos-controller/customer/updateInfo",
-		        	                type : "POST",
-		        	                async:true,
-		        	                jsonp:'jsoncallback',
-		        	                contentType : "application/json;charset=UTF-8",
-		        	                data:JSON.stringify({
-		        	                	telephone:user.cTelephone,
-		        	                	username:$("#username").val(),
-		        	                	sex:$("#sex").val(),
-		        	                	birth:$("#birth").val(),
-		        	                	address:$("#address").val(),
-		        	                	mobile:$("#mobile").val(),
-		        	                	company:$("#company").val(),
-		        	                	department:$("#department").val(),
-		        	                	position:$("#position").val(),
-		        	                }),
-		        	                success:function(result) {
-		        	                    var message= JSON.stringify(result);
-		        	                    if(result.result == 1){
-		        	                    	$.session.set('user', JSON.stringify(result.user));
-		        	                    	//var s = JSON.parse($.session.get('user'));
-		        	                    	//alert(s.cUsername);
-		        	                    	window.location.href="index.html#/userinfo"; //登录成功
-
-		        	                    }else{
-		        	                    	alert("信息更新失败");
-		        	                    }
-		        	                },
-		        	                error:function(result){
-		        	                    alert("信息更新失败");
-		        	                }
-		        	            });
+		                    	
 		                    }else{
 		                    	alert("信息更新失败");
 		                    }
 				    },
 				    error: function (data, status, e){
-				    	alert("信息跟新失败");
+				    	alert(e);
 				    }
 				});
+				$.ajax({
+	 				url : "http://localhost:8081/logistics-bos-controller/customer/updateInfo",
+	                type : "POST",
+	                async:true,
+	                jsonp:'jsoncallback',
+	                contentType : "application/json;charset=UTF-8",
+	                data:JSON.stringify({
+	                	telephone:user.cTelephone,
+	                	username:$("#username").val(),
+	                	sex:$("#sex").val(),
+	                	birth:$("#birth").val(),
+	                	address:$("#address").val(),
+	                	mobile:$("#mobile").val(),
+	                	company:$("#company").val(),
+	                	department:$("#department").val(),
+	                	position:$("#position").val(),
+	                }),
+	                success:function(result) {
+	                    var message= JSON.stringify(result);
+	                    if(result.result == 1){
+	                    	$.session.set('user', JSON.stringify(result.user));
+	                    	//var s = JSON.parse($.session.get('user'));
+	                    	//alert(s.cUsername);
+	                    	window.location.href="index.html#/userinfo"; //登录成功
+
+	                    }else{
+	                    	alert("信息更新失败");
+	                    }
+	                },
+	                error:function(result){
+	                    alert("信息更新失败");
+	                }
+	            });
 	};
 
 	
