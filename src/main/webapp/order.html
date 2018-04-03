@@ -4,6 +4,7 @@
 <link href="css/city-picker.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="css/styleorder.css">
 <script  type="text/javascript" src="js/QuerySession.js"></script>
+<script src="js/smart-table.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 if(typeof($.session.get('user')) == "undefined"){
@@ -115,7 +116,7 @@ if(typeof($.session.get('user')) == "undefined"){
 	
 	
 </script>
-<div class="order" id="ng-app" ng-app="app" ng-controller="myctrl">
+<div class="order" id="ng-app" ng-app="orderModule" ng-controller="orderCtrl">
 	<!-- orderall -->
 	<section>
 		<div class="tab-title ">
@@ -161,7 +162,7 @@ if(typeof($.session.get('user')) == "undefined"){
 											<label class="col-sm-3 control-label"><b>*</b>姓名：</label>
 
 											<div class="col-sm-8 input-group" style="padding:0 15px;">
-												<input name="sendName" type="text" class="form-control" placeholder="请输入发件人姓名" required="required">
+												<input name="sendName" type="text" class="form-control"  placeholder="请输入发件人姓名" required="required">
 												<div class="input-group-addon">
 													<button type="button" data-toggle="modal" data-target="#myModal" id="dao"><img src="images/icon/suyun/contact.png"></button>
 												</div>
@@ -192,20 +193,41 @@ if(typeof($.session.get('user')) == "undefined"){
 																			<input type="password" class="form-control" id="inputPassword" placeholder="输入姓名/手机号/地址查询">
 																		</div>
 																		<button type="submit" class="btn btn-danger new">搜索</button>
-																	<table class="table table-striped">
-																		<thead>
-																			<tr>
-																				<th>姓名</th>
-																				<th>联系方式</th>
-																				<th>公司名</th>
-																				<th>详细地址</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-
-																		</tbody>
-
-																	</table>
+																	
+<table st-table="rowCollection" class="table table-striped">
+	<thead>
+	<tr>
+		<th colspan="1">first name</th>
+		<th colspan="1">last name</th>
+		<th colspan="2">birth date</th>
+		<th colspan="1">balance</th>
+	</tr>
+	<tr>
+		<th colspan="1">查询项：</th>
+		<th colspan="2"><select class="form-control" id="predicate" ng-model="selectedPredicate" ng-options="predicate for predicate in predicates"></select></th>
+		<th>关键字:</th>
+		<th><input st-search="{{selectedPredicate}}" placeholder="bound predicate" class="input-sm form-control" type="search"/></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr ng-repeat="row in rowCollection">
+		<td>{{row.firstName}}</td>
+		<td>{{row.lastName}}</td>
+		<td>{{row.birthDate}}</td>
+		<td>{{row.balance}}</td>
+		<td>
+				<button type="button" ng-click="useRow(row)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle">使用</i></button>
+		</td>
+	</tr>
+	</tbody>
+	<tfoot>
+			<tr>
+				<td colspan="5" class="text-center">
+					<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+				</td>
+			</tr>
+	</tfoot>
+</table>
 
 																	<div role="tabpanel" class="tab-pane active clearfix" id="person">个人地址</div>
 																	<div role="tabpanel" class="tab-pane" id="all">常用地址</div>
@@ -290,11 +312,11 @@ if(typeof($.session.get('user')) == "undefined"){
 											<div class="col-sm-8 input-group" style="padding:0 15px;">
 												<input name="recName" type="text" class="form-control" style="z-index: 0;" placeholder="请输入收件人姓名" required="required">
 												<div class="input-group-addon">
-													<button type="button" data-toggle="modal" data-target="#myModal" id="dao"><img src="images/icon/suyun/contact.png"></button>
+													<button type="button" data-toggle="modal" data-target="#myModal2" id="dao2"><img src="images/icon/suyun/contact.png"></button>
 												</div>
 
 												<!-- Modal -->
-												<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -316,7 +338,7 @@ if(typeof($.session.get('user')) == "undefined"){
 																<!-- Tab panes -->
 																<div class="tab-content">
 																		<div class="form-group col-md-5">
-																			<input type="text" class="form-control" id="inputPassword" placeholder="输入姓名/手机号/地址查询">
+																			<input type="text" class="form-control" id="inputPassword2" placeholder="输入姓名/手机号/地址查询">
 																		</div>
 																		<button type="submit" class="btn btn-danger new">搜索</button>
 																	<table class="table table-striped">

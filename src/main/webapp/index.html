@@ -18,6 +18,23 @@
 		<script type="text/javascript" src="js/angular.min.js"></script>
 		<script type="text/javascript" src="js/angular-route.min.js"></script>
 		
+		
+<script async="" src="//www.google-analytics.com/analytics.js"></script>		
+<!--ui-route配置路由库文件-->
+<script src="js/angular-ui-router.js"></script>
+<!--支持angular的动画库文件-->
+<script src="js/angular-animate.js"></script>
+<!--smart-table库文件-->
+<script src="js/smart-table.js"></script>
+<!--按需加载库文件-->
+<script src="js/ocLazyLoad.js"></script>
+<!--支持angular的bootstrap库文件-->
+<script src="js/ui-bootstrap.js"></script>
+<script src="js/ui-bootstrap-tpls.min.js"></script>
+		
+		
+		
+		
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4IU3oIAMpZhfWZsMu7xzqBBAf6vMHcoa"></script>
 		<script  type="text/javascript" src="js/QuerySession.js"></script>
 <script type="text/javascript">
@@ -168,7 +185,7 @@ if(typeof($.session.get('user')) == "undefined"){
 		</div>
 		<a href="#0" class="cd-top">Top</a>
 		<script type="text/javascript">
-			var bosfore_app = angular.module("bosfore_app", ['ngRoute']);
+			var bosfore_app = angular.module("bosfore_app", ['ngRoute','smart-table']);
 			bosfore_app.config(["$routeProvider",function($routeProvider) {
 				$routeProvider.when("/", {
 					templateUrl: 'main.html'
@@ -220,8 +237,42 @@ if(typeof($.session.get('user')) == "undefined"){
 			
 			// 在线下单控制器
 			bosfore_app.controller("orderCtrl",["$scope",function($scope){
-				
-				
+				var firstnames = ['Laurent', 'Blandine', 'Olivier', 'Max'];
+			    var lastnames = ['Renard', 'Faivre', 'Frere', 'Eponge'];
+			    var dates = ['1987-05-21', '1987-04-25', '1955-08-27', '1966-06-06'];
+			    var id = 1;
+			    function generateRandomItem(id) {
+
+			        var firstname = firstnames[id-1];
+			        var lastname = lastnames[id-1];
+			        var birthdate = dates[id-1];
+			        var balance = Math.floor(Math.random() * 2000);
+
+			        return {
+			            id: id,
+			            firstName: firstname,
+			            lastName: lastname,
+			            birthDate: new Date(birthdate),
+			            balance: balance
+			        }
+			    }
+			    $scope.rowCollection = [];
+			    $scope.itemsByPage=5;
+			    for (id; id < 200; id++) {
+			        $scope.rowCollection.push(generateRandomItem(id));
+			    }
+			    
+			    //remove to the real data holder
+			    $scope.useRow = function useRow(row) {
+			        var index = $scope.rowCollection.indexOf(row);
+			        if (index !== -1) {
+			        	alert($scope.rowCollection[index].firstName);
+			            //$scope.rowCollection.splice(index, 1);
+			        }
+			    }
+			    $scope.predicates = ['firstName', 'lastName', 'birthDate', 'balance'];
+			    $scope.selectedPredicate = $scope.predicates[0];
+			    
 			}]);
 			
 			
@@ -231,15 +282,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			// 定义模块的控制器 
 			// 依赖注入 ，$scope作用域对象，操作当前作用域视图 
 			myapp.controller("myctrl", ["$scope", function($scope){
-				// $scope.orderdata.sendArea = "黑马程序员";
-				// alert("hello"+);
 				
-				$scope.orderdata.sendAddress = "黑马";
-				
-				// 在作用域 提供 clearVal 点击事件 
-				// $scope.clearVal = function(){
-					// $scope.name = "" ; // 模型设置为空 
-				// }
 			}]);
 		</script>
 	</body>
