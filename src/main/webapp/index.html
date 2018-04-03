@@ -242,11 +242,12 @@ if(typeof($.session.get('user')) == "undefined"){
 			
 			// 在线下单控制器(寄件人)
 			bosfore_app.controller("orderCtrl",["$scope",function($scope){
-				var names = ['寄件人', '寄件人', '寄件人', '寄件人'];
-			    var mobiles = ['15653506679', '15653506679', '15653506679', '15653506679'];
-			    var companys = ['阿里巴巴', '阿里巴巴', '阿里巴巴', '阿里巴巴'];
-			    var addresss = ['上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇', '上海市浦东新区川沙新镇'];
-			    var id = 1;
+				var user = JSON.parse($.session.get('user'));
+				
+				var names = [user.cUsername];
+			    var mobiles = [user.cTelephone];
+			    var companys = [user.cCompany];
+			    var addresss = [user.cAddress];
 			    function generateRandomItem(id) {
 
 			        var name = names[id];
@@ -264,7 +265,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    $scope.rowCollection = [];
 			    $scope.itemsByPage=5;
-			    for (id = 0; id < 5; id++) {
+			    for (id = 0; id < 1; id++) {
 			        $scope.rowCollection.push(generateRandomItem(id));
 			    }
 			    
@@ -281,11 +282,10 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    
 			    $scope.myAddress = function(){
-			    	var names = ['寄件人1', '寄件人1', '寄件人1', '寄件人1'];
-				    var mobiles = ['15653506679', '15653506679', '15653506679', '15653506679'];
-				    var companys = ['阿里巴巴1', '阿里巴巴1', '阿里巴巴1', '阿里巴巴1'];
-				    var addresss = ['上海市浦东新区川沙新镇1', '上海市浦东新区川沙新镇1', '上海市浦东新区川沙新镇1', '上海市浦东新区川沙新镇1'];
-				    var id = 1;
+			    	var names = [user.cUsername];
+				    var mobiles = [user.cTelephone];
+				    var companys = [user.cCompany];
+				    var addresss = [user.cAddress];
 				    function generateRandomItem(id) {
 
 				        var name = names[id];
@@ -303,7 +303,7 @@ if(typeof($.session.get('user')) == "undefined"){
 				    }
 				    $scope.rowCollection = [];
 				    $scope.itemsByPage=5;
-				    for (id = 0; id < 5; id++) {
+				    for (id = 0; id < 1; id++) {
 				        $scope.rowCollection.push(generateRandomItem(id));
 				    }
 			    }
@@ -314,7 +314,6 @@ if(typeof($.session.get('user')) == "undefined"){
 				    var mobiles = ['15653506679', '15653506679', '15653506679', '15653506679'];
 				    var companys = ['阿里巴巴2', '阿里巴巴2', '阿里巴巴2', '阿里巴巴2'];
 				    var addresss = ['上海市浦东新区川沙新镇2', '上海市浦东新区川沙新镇2', '上海市浦东新区川沙新镇2', '上海市浦东新区川沙新镇2'];
-				    var id = 1;
 				    function generateRandomItem(id) {
 
 				        var name = names[id];
@@ -346,11 +345,12 @@ if(typeof($.session.get('user')) == "undefined"){
 			
 			// 在线下单控制器(收件人)
 			bosfore_app.controller("orderCtrl2",["$scope",function($scope){
-				var names = ['收件人', '收件人', '收件人', '收件人'];
-			    var mobiles = ['16602107876', '16602107876', '16602107876', '16602107876'];
-			    var companys = ['携程', '携程', '携程', '携程'];
-			    var addresss = ['上海市长宁区金钟路', '上海市长宁区金钟路', '上海市长宁区金钟路', '上海市长宁区金钟路'];
-			    var id = 1;
+				var user = JSON.parse($.session.get('user'));
+				
+				var names = [user.cUsername];
+			    var mobiles = [user.cTelephone];
+			    var companys = [user.cCompany];
+			    var addresss = [user.cAddress];
 			    function generateRandomItem(id) {
 
 			        var name = names[id];
@@ -368,7 +368,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    $scope.rowCollection = [];
 			    $scope.itemsByPage=5;
-			    for (id = 0; id < 5; id++) {
+			    for (id = 0; id < 1; id++) {
 			        $scope.rowCollection.push(generateRandomItem(id));
 			    }
 			    
@@ -384,11 +384,10 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    
 			    $scope.myAddress = function(){
-			    	var names = ['收件人1', '收件人1', '收件人1', '收件人1'];
-				    var mobiles = ['16602107876', '16602107876', '16602107876', '16602107876'];
-				    var companys = ['携程1', '携程1', '携程1', '携程1'];
-				    var addresss = ['上海市长宁区金钟路1', '上海市长宁区金钟路1', '上海市长宁区金钟路1', '上海市长宁区金钟路1'];
-				    var id = 1;
+			    	var names = [user.cUsername];
+				    var mobiles = [user.cTelephone];
+				    var companys = [user.cCompany];
+				    var addresss = [user.cAddress];
 				    function generateRandomItem(id) {
 
 				        var name = names[id];
@@ -404,9 +403,9 @@ if(typeof($.session.get('user')) == "undefined"){
 				            address: address
 				        }
 				    }
-				    $scope.itemsByPage=5;
 				    $scope.rowCollection = [];
-				    for (id = 0; id < 5; id++) {
+				    $scope.itemsByPage=5;
+				    for (id = 0; id < 1; id++) {
 				        $scope.rowCollection.push(generateRandomItem(id));
 				    }
 			    }
@@ -416,7 +415,6 @@ if(typeof($.session.get('user')) == "undefined"){
 				    var mobiles = ['16602107876', '16602107876', '16602107876', '16602107876'];
 				    var companys = ['携程2', '携程2', '携程2', '携程2'];
 				    var addresss = ['上海市长宁区金钟路2', '上海市长宁区金钟路2', '上海市长宁区金钟路2', '上海市长宁区金钟路2'];
-				    var id = 1;
 				    function generateRandomItem(id) {
 
 				        var name = names[id];
@@ -440,7 +438,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    
 			    $scope.clearVal = function(){
-			    	 $scope.recAddress = "济南市历城区山东国际机场" ; // 模型设置为空 
+			    	 $scope.recAddress = "" ; // 模型设置为空 
 				 }
 			    
 			}]);

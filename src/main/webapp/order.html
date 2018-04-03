@@ -314,7 +314,7 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-sm-3 control-label">省市区：</label>
+											<label class="col-sm-3 control-label"><b>*</b>省市区：</label>
 
 											<div class="col-sm-8 province">
 												<div class="docs-methods">
@@ -341,7 +341,7 @@
 											<div class="col-sm-8">
 												<input id="sendAddress" name="sendAddress" type="text"
 													class="form-control" placeholder="街道详细（精确到门牌号） "
-													required="required" ng-model="sendAddress">
+													 ng-model="sendAddress">
 												<div id="searchResultPanel"
 													style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 												<p class="error">请填写正确的信息</p>
@@ -484,7 +484,7 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-sm-3 control-label">省市区：</label>
+											<label class="col-sm-3 control-label"><b>*</b>省市区：</label>
 
 											<div class="col-sm-8 province">
 												<div class="docs-methods">
@@ -509,7 +509,7 @@
 											<div class="col-sm-8">
 												<input id="recAddress" name="recAddress" type="text"
 													class="form-control" placeholder="街道详细（精确到门牌号） "
-													required="required" ng-model="recAddress">
+													 ng-model="recAddress">
 												<div id="recResultPanel"
 													style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 												<p class="error">请填写正确的信息</p>
@@ -537,11 +537,11 @@
 											<label class="col-sm-3 control-label"><b>*</b>拖寄物：</label>
 
 											<div class="col-sm-8">
-												<select class="form-control" name="goodsType">
-													<option>文件</option>
-													<option>衣服</option>
-													<option>食品</option>
-													<option>电子产品</option>
+												<select class="form-control" name="goodsType" id="goodsType">
+													<option value="文件">文件</option>
+													<option value="衣服">衣服</option>
+													<option value="食品">食品</option>
+													<option value="电子产品">电子产品</option>
 												</select>
 
 											</div>
@@ -550,7 +550,7 @@
 											<label class="col-sm-3 control-label">重量：</label>
 
 											<div class="col-sm-8">
-												<input name="weight" type="text" class="form-control"
+												<input name="weight" id="weight" type="text" class="form-control"
 													placeholder="请输入重量" required="required">
 
 											</div>
@@ -559,7 +559,7 @@
 											<label class="col-sm-3 control-label">备注：</label>
 
 											<div class="col-sm-8">
-												<input name="remark" type="text" class="form-control"
+												<input name="remark" id="remark" type="text" class="form-control"
 													placeholder="备注不超过20个字">
 											</div>
 										</div>
@@ -567,10 +567,10 @@
 											<label class="col-sm-3 control-label">快递产品：</label>
 
 											<div class="col-sm-8">
-												<select class="form-control" name="sendProNum">
-													<option>駃达当日</option>
-													<option>駃达次日</option>
-													<option>駃达隔日</option>
+												<select class="form-control" name="sendProNum" id="sendProNum">
+													<option value="駃达当日">駃达当日</option>
+													<option value="駃达次日">駃达次日</option>
+													<option value="駃达隔日">駃达隔日</option>
 
 												</select>
 
@@ -579,10 +579,10 @@
 										<div class="form-group">
 											<label for="inputPassword" class="col-sm-3 control-label">付款方式：</label>
 											<div class="col-sm-8">
-												<select class="form-control" name="payTypeNum">
-													<option>寄付日结</option>
-													<option>寄付月结</option>
-													<option>到付</option>
+												<select class="form-control" name="payTypeNum" id="payTypeNum">
+													<option value="寄付日结">寄付日结</option>
+													<option value="寄付月结">寄付月结</option>
+													<option value="到付">到付</option>
 												</select>
 											</div>
 										</div>
@@ -601,7 +601,7 @@
 											<label class="col-sm-3 control-label">给小哥捎话：</label>
 
 											<div class="col-sm-8">
-												<input name="sendMobileMsg" type="text" class="form-control"
+												<input name="sendMobileMsg" id="sendMobileMsg" type="text" class="form-control"
 													placeholder="有什么要提醒快递员的吗？" required="required">
 
 											</div>
@@ -651,8 +651,72 @@
 	}
 	function submitBtn(){
 		var user = JSON.parse($.session.get('user'));
-		alert(user.cTelephone);
-		alert($("#recAddress").val());
-		$("#recAddress").val("")
+		//寄件人信息
+		var sendName = $("#sendName").val();
+		var sendMobile = $("#sendMobile").val();
+		var sendCompany = $("#sendCompany").val();
+		var sendAddress = $("#sendAddress").val();
+		var sendAreaInfo = $("#sendAreaInfo").val();
+		//收件人信息
+		var recName = $("#recName").val();
+		var recMobile = $("#recMobile").val();
+		var recCompany = $("#recCompany").val();
+		var recAddress = $("#recAddress").val();
+		var recAreaInfo = $("#recAreaInfo").val();
+		//快件信息
+		var goodsType = $("#goodsType").val();
+		var weight = $("#weight").val();
+		var remark = $("#remark").val();
+		var sendProNum = $("#sendProNum").val();
+		var payTypeNum = $("#payTypeNum").val();
+		var sendMobileMsg = $("#sendMobileMsg").val();
+		
+		if(sendName == "" || sendMobile == "" || sendAddress == "" || sendAreaInfo == "" || recName == "" || recMobile == "" || recAddress == "" || recAreaInfo == ""){
+			alert("请填写*必填信息");
+			return false;
+		}else{
+			$.ajax({
+ 				url : "http://localhost:8081/logistics-bos-controller/order/placeAnOrder",
+                type : "POST",
+                async:true,
+                jsonp:'jsoncallback',
+                contentType : "application/json;charset=UTF-8",
+                data:JSON.stringify({
+                	telephone:user.cTelephone,
+            		//寄件人信息
+            		sendName:sendName,
+            		sendMobile:sendMobile,
+            		sendCompany:sendCompany,
+            		sendAddress:sendAddress,
+            		sendAreaInfo:sendAreaInfo,
+            		//收件人信息
+            		recName:recName,
+            		recMobile:recMobile,
+            		recCompany:recCompany,
+            		recAddress:recAddress,
+            		recAreaInfo:recAreaInfo,
+            		//快件信息
+            		goodsType:goodsType,
+            		weight:weight,
+            		remark:remark,
+            		sendProNum:sendProNum,
+            		payTypeNum:payTypeNum,
+            		sendMobileMsg:sendMobileMsg,
+                }),
+                success:function(result) {
+                    var message= JSON.stringify(result);
+                    if(result.result == 1){
+                    	alert("下单成功");
+                    	window.location.href="index.html#/express_manage"; //成功
+
+                    }else{
+                    	alert("下单失败");
+                    }
+                },
+                error:function(result){
+                    alert("下单失败");
+                }
+            });
+		}
 	}
 </script>
