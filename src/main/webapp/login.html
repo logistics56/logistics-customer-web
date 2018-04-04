@@ -64,6 +64,7 @@ function submitBtn(){
 	                    var message= JSON.stringify(result);
 	                    if(result.result == 1){
 	                    	$.session.set('user', JSON.stringify(result.user));
+	                    	$.session.set('allOrderStatus', JSON.stringify(result.allOrderStatus));
 	                    	//var s = JSON.parse($.session.get('user'));
 	                    	//alert(s.cUsername);
 	                    	window.location.href="index.html#/userinfo"; //登录成功

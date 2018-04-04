@@ -3,6 +3,7 @@
 -->
 <link rel="stylesheet" type="text/css" href="css/styleexpress.css">
 <script  type="text/javascript" src="js/QuerySession.js"></script>
+<script src="js/smart-table.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 if(typeof($.session.get('user')) == "undefined"){
@@ -10,7 +11,7 @@ if(typeof($.session.get('user')) == "undefined"){
 }
 }
 </script>
-<div class="express">
+<div class="express" ng-controller="expressCtrl">
 	<div class="container">
 		<div class="col-md-2 tab-title ">
 			<ul class="nav nav-tab vertical-tab" role="tablist" id="vtab">
@@ -19,20 +20,20 @@ if(typeof($.session.get('user')) == "undefined"){
 				</li>
 
 				<li role="presentation" class="pieceorder">
-					<a href="#bb" aria-controls="bb" role="tab" data-toggle="tab"><span>·</span> 待取件（0）</a>
+					<a href="" aria-controls="bb" role="tab" data-toggle="tab" ng-bind="unclaimed" ng-click="unclaimedBtn()"><span>·</span> 待取件（0）</a>
 				</li>
 				<li role="presentation" class="pieceorder">
-					<a href="#cc" aria-controls="cc" role="tab" data-toggle="tab">· 运送中（0）</a>
+					<a href="" aria-controls="cc" role="tab" data-toggle="tab" ng-bind="transport" ng-click="transportBtn()">· 运送中（0）</a>
 				</li>
 				<li role="presentation" class="pieceorder">
-					<a href="#dd" aria-controls="dd" role="tab" data-toggle="tab">· 已签收（0）</a>
+					<a href="" aria-controls="dd" role="tab" data-toggle="tab" ng-bind="signed" ng-click="signedBtn()">· 已签收（0）</a>
 				</li>
 				<li role="presentation" class="pieceorder">
-					<a href="#ee" aria-controls="ee" role="tab" data-toggle="tab">· 异常件（0）</a>
+					<a href="" aria-controls="ee" role="tab" data-toggle="tab" ng-bind="abnormal" ng-click="abnormalBtn()">· 异常件（0）</a>
 				</li>
 
 				<li role="presentation" class="orderrecord">
-					<a href="#ff" aria-controls="ff" role="tab" data-toggle="tab">下单记录</a>
+					<a href="" aria-controls="ff" role="tab" data-toggle="tab" ng-bind="history" ng-click="historyBtn()">下单记录</a>
 				</li>
 			</ul>
 		</div>
@@ -40,49 +41,32 @@ if(typeof($.session.get('user')) == "undefined"){
 		<div class="col-md-10 tabcontent">
 			<div class="tab-content vertical-tab-content">
 				<div role="tabpanel" class="tab-pane active" id="aa">
-
-					<div class="tools">
-						<div class="col-md-3">
-							<div class="form-group">
-								<select class="form-control">
-									<option>全单</option>
-									<option>我收到的快件</option>
-									<option>我寄出的快件</option>
-
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<form class="form">
-								<div class="form-group">
-
-									<div class="input-group">
-
-										<input type="text" class="form-control" id="exampleInputAmount" placeholder="运单号">
-										<div class="input-group-addon">查询</div>
-									</div>
-								</div>
-
-							</form>
-
-						</div>
-
-					</div>
-
+					
 					<div class="ordertable">
-						<table class="table table-striped">
-							<tr>
-								<td>运单号</td>
-								<td>寄件人/ 收件人</td>
-								<td>时间</td>
-								<td class="">操作</td>
-							</tr>
-						</table>
-						<table class="table table-bordered table-striped" id="expresscontent">
 
-						</table>
+																	<table st-table="rowCollection"
+																		style="text-align: center;"
+																		class="table table-striped">
+																		<thead>
+																			<tr>
+																				<th colspan="1">运单号</th>
+																				<th colspan="6">寄件人/ 收件人</th>
+																				<th colspan="1">托寄物类型</th>
+																				<th colspan="1">时间</th>
+																				
+																		</thead>
+																		<tbody>
+																			<tr ng-repeat="row in rowCollection">
+																				<td colspan="1">{{row.orderNum}}</td>
+																				<td colspan="6">{{row.person}}</td>
+																				<td colspan="1">{{row.type}}</td>
+																				<td colspan="1">{{row.time}}</td>
+																			</tr>
+																		</tbody>
+																	</table>
 
-					</div>
+
+																</div>
 
 				</div>
 				<div role="tabpanel" class="tab-pane" id="bb">待取件</div>

@@ -62,8 +62,8 @@ function checkUser(ref){
 if(typeof($.session.get('user')) == "undefined"){
 	window.location.href="login.html";
 }else{
-	if(ref == "order"){//常用地址缓存
 		var user = JSON.parse($.session.get('user'));
+	//常用地址缓存
 		$.ajax({
 			url : "http://localhost:8081/logistics-bos-controller/order/queryDisSendAddress",
 		    type : "POST",
@@ -100,7 +100,25 @@ if(typeof($.session.get('user')) == "undefined"){
 		    
 		    }
 		});
-	}
+		$.ajax({
+			url : "http://localhost:8081/logistics-bos-controller/order/allOrderStatus",
+		    type : "POST",
+		    async:true,
+		    jsonp:'jsoncallback',
+		    contentType : "application/json;charset=UTF-8",
+		    data:JSON.stringify({
+		    	telephone:user.cTelephone,
+		    }),
+		    success:function(data2) {
+		        if(data2.result == 1){
+		        	$.session.set('allOrderStatus', JSON.stringify(data2.allOrderStatus));
+		        }
+		    },
+		    error:function(data2){
+		    
+		    }
+		});
+	
 	window.location.href="index.html#/"+ref;
 }
 }
@@ -260,7 +278,7 @@ if(typeof($.session.get('user')) == "undefined"){
 				var s = JSON.parse($.session.get('user'));
 				$scope.name = s.cUsername;
 				$scope.company = s.cCompany;
-				$scope.birthday = new Date(s.cBrithday).pattern("yyyy-MM-dd");;
+				$scope.birthday = new Date(s.cBrithday).pattern("yyyy-MM-dd");
 				$scope.department = s.cDepartment;
 				if(s.cSex == 1){
 					$scope.sex = "男";
@@ -286,17 +304,12 @@ if(typeof($.session.get('user')) == "undefined"){
 				var user = JSON.parse($.session.get('user'));
 				var sendAddress = JSON.parse($.session.get('sendAddress'));
 				
-				var names = [user.cUsername];
-			    var mobiles = [user.cTelephone];
-			    var companys = [user.cCompany];
-			    var addresss = [user.cAddress];
-			    function generateRandomItem(id) {
-
-			        var name = names[id];
-			        var mobile = mobiles[id];
-			        var company = companys[id];
-			        var address = addresss[id];
-
+				function generateRandomItem(id) {
+					
+			        var name = sendAddress[id].cSendName;
+			        var mobile = sendAddress[id].cSendMobile;
+			        var company = sendAddress[id].cSendCompany;
+			        var address = sendAddress[id].cSendAddress;
 			        return {
 			            id: id,
 			            name: name,
@@ -305,9 +318,10 @@ if(typeof($.session.get('user')) == "undefined"){
 			            address: address
 			        }
 			    }
-			    $scope.rowCollection = [];
+		    	$scope.rowCollection = [];
 			    $scope.itemsByPage=5;
-			    for (id = 0; id < 1; id++) {
+			    var num = sendAddress.length > 5 ? 5 : sendAddress.length;
+			    for (id = 0; id < num; id++) {
 			        $scope.rowCollection.push(generateRandomItem(id));
 			    }
 			    
@@ -324,16 +338,12 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    
 			    $scope.myAddress = function(){
-			    	var names = [user.cUsername];
-				    var mobiles = [user.cTelephone];
-				    var companys = [user.cCompany];
-				    var addresss = [user.cAddress];
 				    function generateRandomItem(id) {
 
-				        var name = names[id];
-				        var mobile = mobiles[id];
-				        var company = companys[id];
-				        var address = addresss[id];
+				        var name = user.cUsername;
+				        var mobile = user.cTelephone;
+				        var company = user.cCompany;
+				        var address = user.cAddress;
 
 				        return {
 				            id: id,
@@ -387,17 +397,12 @@ if(typeof($.session.get('user')) == "undefined"){
 				var user = JSON.parse($.session.get('user'));
 				var recAddress = JSON.parse($.session.get('recAddress'));
 				
-				var names = [user.cUsername];
-			    var mobiles = [user.cTelephone];
-			    var companys = [user.cCompany];
-			    var addresss = [user.cAddress];
-			    function generateRandomItem(id) {
-
-			        var name = names[id];
-			        var mobile = mobiles[id];
-			        var company = companys[id];
-			        var address = addresss[id];
-
+				function generateRandomItem(id) {
+					
+			        var name = recAddress[id].cRecName;
+			        var mobile = recAddress[id].cRecMobile;
+			        var company = recAddress[id].cRecCompany;
+			        var address = recAddress[id].cRecAddress;
 			        return {
 			            id: id,
 			            name: name,
@@ -406,9 +411,10 @@ if(typeof($.session.get('user')) == "undefined"){
 			            address: address
 			        }
 			    }
-			    $scope.rowCollection = [];
+		    	$scope.rowCollection = [];
 			    $scope.itemsByPage=5;
-			    for (id = 0; id < 1; id++) {
+			    var num = recAddress.length > 5 ? 5 : recAddress.length;
+			    for (id = 0; id < num; id++) {
 			        $scope.rowCollection.push(generateRandomItem(id));
 			    }
 			    
@@ -424,16 +430,12 @@ if(typeof($.session.get('user')) == "undefined"){
 			    }
 			    
 			    $scope.myAddress = function(){
-			    	var names = [user.cUsername];
-				    var mobiles = [user.cTelephone];
-				    var companys = [user.cCompany];
-				    var addresss = [user.cAddress];
 				    function generateRandomItem(id) {
 
-				        var name = names[id];
-				        var mobile = mobiles[id];
-				        var company = companys[id];
-				        var address = addresss[id];
+				        var name = user.cUsername;
+				        var mobile = user.cTelephone;
+				        var company = user.cCompany;
+				        var address = user.cAddress;
 
 				        return {
 				            id: id,
@@ -478,6 +480,204 @@ if(typeof($.session.get('user')) == "undefined"){
 				 }
 			    
 			}]);
+			
+			
+			
+			// 订单管理
+			bosfore_app.controller("expressCtrl",["$scope",function($scope){
+				var user = JSON.parse($.session.get('user'));
+				var allOrderStatus = JSON.parse($.session.get('allOrderStatus'));
+				var a ;
+				if(allOrderStatus[0] == null){
+					a=0;
+				}else{
+					a=allOrderStatus[0].length
+				}
+				$scope.unclaimed = "· 待取件（"+a+"）";
+				
+				var b ;
+				if(allOrderStatus[1] == null){
+					b=0;
+				}else{
+					b=allOrderStatus[1].length
+				}
+				$scope.transport = "· 运送中（"+b+"）";
+				
+				var c ;
+				if(allOrderStatus[2] == null){
+					c=0;
+				}else{
+					c=allOrderStatus[2].length
+				}
+				$scope.signed = "· 已签收（"+c+"）";
+				
+				var d ;
+				if(allOrderStatus[3] == null){
+					d=0;
+				}else{
+					d=allOrderStatus[3].length
+				}
+				$scope.abnormal = "· 异常件（"+d+"）";
+				
+				var e ;
+				if(allOrderStatus[4] == null){
+					e=0;
+				}else{
+					e=allOrderStatus[4].length
+				}
+				$scope.history = "下单记录("+e+")";
+				$scope.rowCollection = [];
+				
+				var data = allOrderStatus[0];
+				function generateRandomItem(id) {
+					
+			        var orderNum = data[id].cOrderNum;
+			        var person = data[id].cSendName +"/"+data[id].cRecName ;
+			        var type = data[id].cGoodsType;
+			        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+			        return {
+			            id: id,
+			            orderNum: orderNum,
+			            person: person,
+			            type:type,
+			            time: time,
+			        }
+			    }
+		    	
+			    
+			    var num = data.length;
+			    for (id = 0; id < num; id++) {
+			        $scope.rowCollection.push(generateRandomItem(id));
+			    }
+				
+			    $scope.unclaimedBtn = function(){
+			    	var data = allOrderStatus[0];
+			    	$scope.rowCollection = [];
+					function generateRandomItem(id) {
+						
+				        var orderNum = data[id].cOrderNum;
+				        var person = data[id].cSendName +"/"+data[id].cRecName ;
+				        var type = data[id].cGoodsType;
+				        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+				        return {
+				            id: id,
+				            orderNum: orderNum,
+				            person: person,
+				            type:type,
+				            time: time,
+				        }
+				    }
+			    	
+				    
+				    var num = data.length;
+				    for (id = 0; id < num; id++) {
+				        $scope.rowCollection.push(generateRandomItem(id));
+				    }
+			    }
+			    $scope.transportBtn = function(){
+			    	var data = allOrderStatus[1];
+			    	$scope.rowCollection = [];
+					function generateRandomItem(id) {
+						
+				        var orderNum = data[id].cOrderNum;
+				        var person = data[id].cSendName +"/"+data[id].cRecName ;
+				        var type = data[id].cGoodsType;
+				        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+				        return {
+				            id: id,
+				            orderNum: orderNum,
+				            person: person,
+				            type:type,
+				            time: time,
+				        }
+				    }
+			    	
+				    
+				    var num = data.length;
+				    for (id = 0; id < num; id++) {
+				        $scope.rowCollection.push(generateRandomItem(id));
+				    }
+			    }
+			    $scope.signedBtn = function(){
+			    	var data = allOrderStatus[2];
+			    	$scope.rowCollection = [];
+					function generateRandomItem(id) {
+						
+				        var orderNum = data[id].cOrderNum;
+				        var person = data[id].cSendName +"/"+data[id].cRecName ;
+				        var type = data[id].cGoodsType;
+				        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+				        return {
+				            id: id,
+				            orderNum: orderNum,
+				            person: person,
+				            type:type,
+				            time: time,
+				        }
+				    }
+			    	
+				    
+				    var num = data.length;
+				    for (id = 0; id < num; id++) {
+				        $scope.rowCollection.push(generateRandomItem(id));
+				    }
+			    }
+			    
+			    $scope.abnormalBtn = function(){
+			    	var data = allOrderStatus[3];
+			    	$scope.rowCollection = [];
+					function generateRandomItem(id) {
+						
+				        var orderNum = data[id].cOrderNum;
+				        var person = data[id].cSendName +"/"+data[id].cRecName ;
+				        var type = data[id].cGoodsType;
+				        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+				        return {
+				            id: id,
+				            orderNum: orderNum,
+				            person: person,
+				            type:type,
+				            time: time,
+				        }
+				    }
+			    	
+				    
+				    var num = data.length;
+				    for (id = 0; id < num; id++) {
+				        $scope.rowCollection.push(generateRandomItem(id));
+				    }
+			    }
+			   
+			    
+			    $scope.historyBtn = function(){
+			    	var data = allOrderStatus[4];
+			    	$scope.rowCollection = [];
+					function generateRandomItem(id) {
+						
+				        var orderNum = data[id].cOrderNum;
+				        var person = data[id].cSendName +"/"+data[id].cRecName ;
+				        var type = data[id].cGoodsType;
+				        var time = new Date(data[id].cOrderTime).pattern("yyyy-MM-dd HH:mm:ss");
+				        return {
+				            id: id,
+				            orderNum: orderNum,
+				            person: person,
+				            type:type,
+				            time: time,
+				        }
+				    }
+			    	
+				    
+				    var num = data.length;
+				    for (id = 0; id < num; id++) {
+				        $scope.rowCollection.push(generateRandomItem(id));
+				    }
+			    }
+			    
+			    
+			}]);
+			
+			
 			
 			
 			// 初始化 myapp 模块 
