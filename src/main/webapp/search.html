@@ -9,6 +9,37 @@ if(typeof($.session.get('user')) == "undefined"){
 	window.location.href="login.html";
 }
 }
+function search(){
+	$.ajax({
+		url : "http://localhost:8081/logistics-bos-controller/transitInfo/searchProgress",
+	    type : "POST",
+	    async:true,
+	    jsonp:'jsoncallback',
+	    contentType : "application/json;charset=UTF-8",
+	    data:JSON.stringify({
+	    	cOrderNum :$("#exampleInputAmount").val(),
+	    }),
+	    success:function(data) {
+	        if(data.result == 1){
+	        	var result = data.orderProgress;
+	        	var trStr = '';//动态拼接table
+	        	var num = result.length;
+				for (i = num - 1; i >= 0; i--) {
+					 trStr += '<tr class="example">';//拼接处规范的表格形式
+					 trStr += '<td >' + result[i].recName + '</td>';
+					 trStr += '<td >' + result[i].transitInfo + '</td>';
+					 trStr += '<td >' + new Date(result[i].time).pattern("yyyy-MM-dd HH:mm:ss") + '</td>';
+					 trStr += '</tr>'; 
+
+				 }
+				$("#ordercontent").html(trStr);
+	        }
+	    },
+	    error:function(data){
+	    
+	    }
+	});	
+}
 </script>
 <section class="searchbox">
 	<div class="container">
@@ -21,7 +52,7 @@ if(typeof($.session.get('user')) == "undefined"){
 			<form class="form">
 				<div class="form-inline">
 					<input type="text" class="form-control" id="exampleInputAmount" placeholder="输入查询的运单号码">
-					<button type="submit" class="btn btn-danger">查询</button>
+					<button type="submit" class="btn btn-danger" onclick="search()">查询</button>
 				</div>
 			</form>
 		</div>
@@ -33,9 +64,9 @@ if(typeof($.session.get('user')) == "undefined"){
 	<div class="ordertable">
 		<table class="table table-striped">
 			<tr>
-				<td><input type="checkbox" id="receiver">　收件人姓名</td>
+				<td>收件人姓名</td>
 				<td>运单最新状态</td>
-				<td class="">操作</td>
+				<td class="">时间</td>
 			</tr>
 		</table>
 		<table class="table table-bordered table-striped" id="ordercontent">
