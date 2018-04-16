@@ -45,13 +45,11 @@ p {
     padding: 6px 41px;
     background: #df3033;
     font-size: 16px;}
-    
-.newsarea,.fresharea{font-family: "微软雅黑";}
-.newsarea{overflow:hidden;background:url(../images/show/kuaida/newsbg.png) no-repeat left top;font-size:12px; 
-background-size: 100% 100%;
-    
-    background-position: 0 0;}
-.newsarea .newslist{background:#df3033;color:#fff}
+.newsarea{width: 95%; margin: 0 auto}  
+.newsout,.fresharea{font-family: "微软雅黑";}
+.newsout{overflow:hidden;background:url(../images/show/kuaida/newsbg.jpg) no-repeat left top;font-size:12px; 
+background-size: 70% 100%; background-position: 0 0;}
+.newsout .newslist{background:#df3033;color:#fff}
 .newslist .news{width:62%;}
 .news ul{    border-top: 1px solid #fff;
     padding-top: 15px;}

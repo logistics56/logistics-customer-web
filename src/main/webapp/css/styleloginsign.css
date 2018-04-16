@@ -119,7 +119,7 @@ b {
 }
 
 .signnav .active {
-	background: url(../images/icon/suyun/sign01.png) no-repeat;
+	background: url(../images/icon/kuaida/sign01.png) no-repeat;
 	padding: 9px 15%;
 }
 
@@ -152,7 +152,7 @@ b {
 }
 
 .successstyle {
-	background: url(../images/icon/suyun/right.png) no-repeat left center;
+	background: url(../images/icon/kuaida/right.png) no-repeat left center;
 	padding: 10px 5%;
 	color: #0078ff;
 	font-family: "微软雅黑";
